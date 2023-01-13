@@ -1,0 +1,27 @@
+html,
+body,
+#app {
+  height: 100%;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+  'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  
+}
+
+html,
+body{
+  overflow: hidden;
+}
+.common-layout{
+  height: 100%;
+}
+
+.box-card-main {
+  margin-top: 10px;
+}
+
+.box-card-main {
+  margin-top: 10px;
+}
+.container-box{
+  height: 100%;
+}
