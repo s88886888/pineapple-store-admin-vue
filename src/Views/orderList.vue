@@ -20,7 +20,7 @@
             v-model="searchInputId"
             wi
             placeholder="订单编号"
-            style="width: 200px"
+            style="width: 300px"
           />
 
           <el-input
@@ -217,7 +217,7 @@ const indexMethod = (index: number) => {
 
 //搜索框值
 const searchInputName = ref<string>("");
-const searchInputId = ref<string>("");
+const searchInputId = ref<String>("");
 const searchInputOrderStatus = ref<string>("");
 const searchInputStatus = ref<number>(0);
 
