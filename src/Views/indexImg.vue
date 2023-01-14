@@ -1,7 +1,5 @@
 <template>
-
   <el-card class="box-card-main">
-    
     <template #header>
       <div class="card-header">
         <el-button type="primary" @click="addIndexImg" round>新增</el-button>
@@ -22,12 +20,12 @@
 
     <el-table v-loading="loading" :data="tableData" style="width: 100%">
       <el-table-column fixed type="index" :index="indexMethod" />
-      <el-table-column  prop="imgId" label="编号" width="100" />
+      <el-table-column prop="imgId" label="编号" width="100" />
       <el-table-column
         prop="createTime"
         :formatter="createTimeFilter"
-        label="时间"
-        width="120"
+        label="创建时间"
+        width="180"
       />
       <el-table-column prop="imgName" label="图片名字" width="150" />
       <el-table-column prop="status" label="启用状态" width="100">
@@ -72,7 +70,7 @@
       </el-table-column>
 
       <el-table-column prop="imgUrl" label="图片地址" width="370" />
-      <el-table-column prop="describes" label="文字描述" width="200" />
+      <el-table-column prop="describes" label="图片文字描述" width="200" />
 
       <el-table-column fixed="right" label="操作" width="150">
         <template #default="scope">
@@ -163,7 +161,7 @@
         </template>
       </el-form-item>
 
-      <el-form-item label="文字描述" prop="describes">
+      <el-form-item label="图片文字描述" prop="describes">
         <el-input v-model="ruleForm.describes" type="textarea" />
       </el-form-item>
 
@@ -279,10 +277,9 @@ const deleteClick = (id: string) => {
 
 ////////////////////////////公共数据/////////////////////////////
 
-
 const indexMethod = (index: number) => {
-  return index * 1
-}
+  return index * 1;
+};
 
 //数据初始化
 const ruleForm = ref({
@@ -504,7 +501,6 @@ const editStatus = (id: string) => {
         message: res.msg,
         type: "success",
       });
-   
     } else {
       loading.value = false;
       ElMessage({

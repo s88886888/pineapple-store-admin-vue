@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:44:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-12 21:54:35
+ * @LastEditTime: 2023-01-14 20:47:52
  * @FilePath: \pineapple-admin-vue\src\router\index.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -52,6 +52,11 @@ const routes:Array<RouteRecordRaw> = [
         name: 'goodsList',
         path: '/goodsList',
         component: () => import('../Views/goodsList.vue')
+    },
+    {
+        name: 'orderList',
+        path: '/orderList',
+        component: () => import('../Views/orderList.vue')
     },
 
 

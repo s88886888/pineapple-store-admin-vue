@@ -49,10 +49,7 @@
               <div>
                 <el-switch
                   v-model="addGoodsForm.productStatus"
-                  style="
-                    --el-switch-on-color: #13ce66;
-                    --el-switch-off-color: #ff4949;
-                  "
+                  style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
                   :active-value="1"
                   :inactive-value="0"
                 />
@@ -142,6 +139,16 @@
         </el-form>
       </el-card>
       <!-- 添加商品图片 -->
+
+
+      <!-- 添加库存 -->
+      <el-card class="box-card-GoodsSku" v-show="GoodsSKuShow">
+        <div v-for="o in 4" :key="o" class="text item">
+          {{ "List item " + o }}
+        </div>
+      </el-card>
+
+      <!-- 添加库存 -->
     </div>
 
     <!-- 步骤按钮 -->
@@ -250,9 +257,9 @@ let uploadImg = (file: { file: any }) => {
         }
       } else {
         if (activeSteps.value == 0) {
-          addGoodsForm.url = res.data.images;
+          addGoodsForm.url = res.data.data.url;
         } else {
-          AddGoodsImgForm.push({ uid: file.file.uid, url: res.data.images });
+          AddGoodsImgForm.push({ uid: file.file.uid, url: res.data.data.url });
         }
       }
       return ElMessage({
@@ -371,8 +378,10 @@ const addGoodsRules = reactive<FormRules>({
   productStar: [],
 });
 
-const addGoodsShow = ref<boolean>(true);
+const addGoodsShow = ref<boolean>(false);
 const backshow = ref<boolean>(false);
+
+const GoodsSKuShow = ref<boolean>(true);
 
 //#endregion
 
@@ -433,8 +442,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         return;
       }
       if (activeSteps.value == 1) {
-      const index =  AddGoodsImgForm.findIndex(val=>val.uid==0);
-      AddGoodsImgForm.splice(index,1);
+        const index = AddGoodsImgForm.findIndex((val) => val.uid == 0);
+        AddGoodsImgForm.splice(index, 1);
         console.log(addGoodsForm);
         console.log(AddGoodsImgForm);
       }

@@ -179,7 +179,7 @@
         prop="createTime"
         :formatter="createTimeFilter"
         label="添加时间"
-        width="120"
+        width="180"
       />
 
       <el-table-column fixed="right" label="操作" width="150">

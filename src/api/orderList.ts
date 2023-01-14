@@ -14,10 +14,10 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-09 20:30:08
+ * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-15 02:51:18
- * @FilePath: \pineapple-admin-vue\src\utils\dateFormat.ts
+ * @LastEditTime: 2023-01-15 03:09:41
+ * @FilePath: \pineapple-admin-vue\src\api\orderList.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -25,14 +25,40 @@
 
 
 
-import moment from "moment";
+import axios from '../utils/http'
 
-const createTimeFilter = (cellValue:{createTime:{}})=> {
-  
-  if (cellValue.createTime != null) {
-    return moment(cellValue.createTime).format("YYYY-MM-DD HH:MM:ss");
-  }
+
+
+
+const orderList = {
+
+    /**
+      * @description: 查询分页查询
+      * @param  null
+      * @return: 数组
+      */
+
+    getorderListPage(param: {}) { return axios.get('/orders/Page', param) },
+
+
+
+
+    /**
+    * @description: 根据一条ID进行删除一条数据
+    * @param  string
+    * @return: null
+    */
+    delorderList(id: string) { return axios.delete('/orders/' + id) },
+
+
+
 }
 
-  export default createTimeFilter;
-  
+
+
+export default orderList
+
+
+
+
+
