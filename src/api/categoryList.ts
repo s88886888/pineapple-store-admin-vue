@@ -14,40 +14,54 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-09 04:40:43
+ * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-16 17:10:39
- * @FilePath: \pineapple-admin-vue\vite.config.ts
+ * @LastEditTime: 2023-01-16 19:48:17
+ * @FilePath: \pineapple-admin-vue\src\api\categoryList.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  */
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
 
-  server: {
-    hmr:true,
-    port: 8999,
-    proxy: {
-      "/api": {
-        target: "http://localhost:8081",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-      "/img": {
-        target: "https://smms.app/api/v2",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/img/, ""),
-      },
-    },
-  },
+import axios from '../utils/http'
 
-  
-})
+
+
+
+const categoryList = {
+
+
+
+    /**
+     * @description: 分页获取数据
+     * @param {*} param
+     * @return {*}
+     */
+    getcategoryListPage(param: {}) { return axios.get('/category/SelectPage', param) },
+
+    /**
+     * @description: 修改备注
+     * @return {*}
+     */
+    putcategoryList(param: {}) { return axios.put('/orders/', param) }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+export default categoryList
+
+
+
 
 

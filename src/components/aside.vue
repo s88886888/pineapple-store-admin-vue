@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-16 16:46:57
+ * @LastEditTime: 2023-01-16 19:37:12
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -54,10 +54,18 @@
       </el-menu-item-group>
 
       <el-menu-item-group>
+        <router-link to="/categoryList"
+          ><el-menu-item index="1-3"
+            ><el-icon><Money /></el-icon>分类列表</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+
+      <el-menu-item-group>
         <template #title></template>
         <router-link to="/indexImg"
-          ><el-menu-item index="1-3">
-            <el-icon><Picture /></el-icon>设置轮播图</el-menu-item
+          ><el-menu-item index="1-4">
+            <el-icon><Handbag /></el-icon>设置轮播图</el-menu-item
           >
         </router-link>
       </el-menu-item-group>
@@ -111,6 +119,7 @@ import {
   Tickets,
   Money,
   Picture,
+  Handbag
 } from "@element-plus/icons-vue";
 
 //折叠开关
