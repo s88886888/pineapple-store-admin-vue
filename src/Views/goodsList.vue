@@ -1,6 +1,5 @@
 <template>
   <el-card class="box-card-main">
-    
     <template #header>
       <div class="card-header-top">
         <el-button type="primary" @click="addIndexImg" round>新增</el-button>
@@ -39,7 +38,9 @@
             :value="item.value"
           />
         </el-select>
+      </div>
 
+      <div class="card-header-box">
         <el-input
           class="searchInput"
           v-model="searchInputContent"
@@ -59,12 +60,11 @@
       </div>
     </template>
 
-
-    
     <el-table
       v-loading="loading"
       :data="tableData"
       :border="true"
+      :table-layout="'auto'"
       style="width: 100%"
     >
       <el-table-column fixed type="index" :index="indexMethod" />
@@ -117,7 +117,7 @@
               />
             </el-tooltip>
           </div>
-<!--           <div>
+          <!--           <div>
             <span>新品: </span>
             <el-tooltip :content="'点击按钮控制开关'" placement="top">
               <el-switch
@@ -224,8 +224,6 @@
         </div>
       </div>
     </el-card>
-
-
   </el-card>
 
   <!-- 编辑框框 -->
@@ -412,9 +410,6 @@ const currentChange = (val: number) => {
     getData();
   }
   indexSearch();
- 
-
-
 };
 
 /* 用于控制该表单域下组件的默认尺寸	'large' | 'default' | 'small'	'default' */
@@ -641,41 +636,40 @@ const categoryOptions = reactive([
 ]);
 
 //痛苦面具搜索事件
-  function indexSearch () {
-    loading.value = true;
-    goodList
-      .getGoodListLike({
-        Id: searchInputId.value,
-        name: searchInputName.value,
-        content: searchInputContent.value,
-        status: searchInputStatus.value,
-        categoryId: searchInputCategory.value,
-        current: current.value,
-        size: size.value,
-      })
-      .then((res) => {
-        if (res.code == 200) {
-          tableData.value = res.data.records;
-          current.value = res.data.current;
-          total.value = res.data.total;
-          size.value=res.data.size
-          //加钱优化
-          setTimeout(() => {
-            loading.value = false;
-          }, 500);
-        } else {
-          ElMessage({
-            showClose: true,
-            message: res.msg,
-            type: "error",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
+function indexSearch() {
+  loading.value = true;
+  goodList
+    .getGoodListLike({
+      Id: searchInputId.value,
+      name: searchInputName.value,
+      content: searchInputContent.value,
+      status: searchInputStatus.value,
+      categoryId: searchInputCategory.value,
+      current: current.value,
+      size: size.value,
+    })
+    .then((res) => {
+      if (res.code == 200) {
+        tableData.value = res.data.records;
+        current.value = res.data.current;
+        total.value = res.data.total;
+        size.value = res.data.size;
+        //加钱优化
+        setTimeout(() => {
+          loading.value = false;
+        }, 500);
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 //#endregion
 

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 11:03:39
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-10 16:42:36
+ * @LastEditTime: 2023-01-15 20:40:34
  * @FilePath: \pineapple-admin-vue\src\utils\request.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -61,6 +61,9 @@ request.interceptors.response.use(response => {
   return response.data
 }, error => {
   const { status } = error.response
+
+  console.log(status);
+  
   if (status === 401) { // token失效
     // this.$Message.error('token失效，请重新登录')
     // 清除token

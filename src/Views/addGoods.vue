@@ -1,5 +1,6 @@
 <template>
   <el-card class="box-card-main">
+    
     <template #header>
       <div class="card-header-top">
         <el-steps :active="activeSteps" align-center finish-status="success">

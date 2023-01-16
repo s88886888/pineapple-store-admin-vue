@@ -14,65 +14,54 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-09 04:44:37
+ * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-15 21:52:59
- * @FilePath: \pineapple-admin-vue\src\router\index.ts
+ * @LastEditTime: 2023-01-16 16:57:40
+ * @FilePath: \pineapple-admin-vue\src\api\orderItem.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  */
 
-import { createRouter, createWebHistory,RouteRecordRaw } from 'vue-router'
 
 
-const routes:Array<RouteRecordRaw> = [
-
-    {
-        name: 'demo',
-        path: '/',
-        component: () => import('../Views/demo.vue')
-    },
-    {
-        name: 'addGoods',
-        path: '/addGoods',
-        component: () => import('../Views/addGoods.vue')
-    },
-    {
-        name: 'indexGoods',
-        path: '/indexGoods',
-        component: () => import('../Views/indexGoods.vue')
-    },
-    {
-        name: 'indexImg',
-        path: '/indexImg',
-        component: () => import('../Views/indexImg.vue')
-    },
-    {
-        name: 'goodsList',
-        path: '/goodsList',
-        component: () => import('../Views/goodsList.vue')
-    },
-    {
-        name: 'orderList',
-        path: '/orderList',
-        component: () => import('../Views/orderList.vue')
-    },
-    {
-        name: 'orderItem',
-        path: '/orderItem',
-        component: () => import('../Views/orderItem.vue')
-    },
+import axios from '../utils/http'
 
 
 
-];
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+const orderItem = {
 
 
 
-export default router
+    /**
+     * @description: 根据id查询
+     * @param {*} param
+     * @return {*}
+     */
+    getOrderitem(id: any) { return axios.get('/orders/getOrderitem/' + id) },
+
+    /**
+     * @description: 修改备注
+     * @return {*}
+     */
+    putOrderitem(param: {}) { return axios.put('/orders/', param) }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+export default orderItem
+
+
+
+
+

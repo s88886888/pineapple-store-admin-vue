@@ -8,7 +8,7 @@
           </p>
         </div>
         <div>
-          <el-button round>重置数据</el-button>
+          <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
         </div>
       </div>
@@ -49,14 +49,17 @@
       <div class="card-header-box-datatime">
         <el-date-picker
           v-model="dataTimeOne"
-          type="datetime"
+          type="date"
           placeholder="开始时间"
+          @change="dataTimeOneChange"
         />
+
         <el-date-picker
           style="margin-left: 20px"
           v-model="dataTimeTwo"
-          type="datetime"
+          type="date"
           placeholder="结束时间"
+          @change="dataTimeTwoChange"
         />
       </div>
     </template>
@@ -65,6 +68,7 @@
       v-loading="loading"
       :data="tableData"
       :border="true"
+      :table-layout="auto"
       style="width: 100%"
     >
       <el-table-column fixed type="index" :index="indexMethod" />
@@ -124,7 +128,12 @@
             </template>
           </el-popconfirm>
 
-          <el-button type="primary" size="small">查看</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            @click="goOrderItem(scope.row.orderId)"
+            >查看</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -148,13 +157,13 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ElMessage
-} from "element-plus";
+import { ElMessage } from "element-plus";
 import { Delete, Search } from "@element-plus/icons-vue";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
 import orderList from "../api/orderList";
+import { auto } from "@popperjs/core";
+import { useRouter } from "vue-router";
 
 //生命周期事件，当挂载完毕
 onMounted(() => {
@@ -205,6 +214,18 @@ function getData() {
 //分页器一旦发生改变
 const currentChange = (val: number) => {
   current.value = val;
+
+  if (
+    searchInputName.value != "" ||
+    searchInputId.value != "" ||
+    searchInputOrderStatus.value != "" ||
+    searchInputStatus.value != 0 ||
+    dataTimeOne.value != "" ||
+    dataTimeTwo.value != ""
+  ) {
+    return indexSearch();
+  }
+
   getData();
 };
 
@@ -255,6 +276,13 @@ const OrederOptions = reactive([
   },
 ]);
 
+const dataTimeOneChange = (val: string) => {
+  dataTimeOne.value = val;
+};
+const dataTimeTwoChange = (val: string) => {
+  dataTimeTwo.value = val;
+};
+
 //痛苦面具搜索事件
 function indexSearch() {
   loading.value = true;
@@ -263,8 +291,8 @@ function indexSearch() {
       id: searchInputId.value,
       name: searchInputName.value,
       status: searchInputStatus.value,
-      dataTimeOne:dataTimeOne.value,
-      dataTimeTwo:dataTimeTwo.value,
+      dataTimeOne: dataTimeOne.value,
+      dataTimeTwo: dataTimeTwo.value,
       current: current.value,
       size: size.value,
     })
@@ -290,9 +318,21 @@ function indexSearch() {
       console.log(err);
     });
 }
+const reData = () => {
+  searchInputName.value = "";
+  searchInputId.value = "";
+  searchInputOrderStatus.value = "";
+  searchInputStatus.value = 0;
+  dataTimeOne.value = "";
+  dataTimeTwo.value = "";
+};
 
 const searchInputOrderStatusChange = (val: number) => {
   searchInputStatus.value = val;
+};
+const router = useRouter();
+const goOrderItem = (val: string) => {
+  router.push({ name: "orderItem", query: { orderId: val } }); //传递参数
 };
 //#endregion
 

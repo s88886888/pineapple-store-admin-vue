@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-14 20:57:13
+ * @LastEditTime: 2023-01-16 16:46:57
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -39,25 +39,28 @@
 
       <el-menu-item-group>
         <router-link to="/addGoods">
-          <el-menu-item index="1-1"> <el-icon><Sell /></el-icon>添加商品
+          <el-menu-item index="1-1">
+            <el-icon><Sell /></el-icon>添加商品
           </el-menu-item>
         </router-link>
       </el-menu-item-group>
 
       <el-menu-item-group>
         <router-link to="/goodsList"
-          ><el-menu-item index="1-2"><el-icon><Money /></el-icon>商品列表</el-menu-item>
+          ><el-menu-item index="1-2"
+            ><el-icon><Money /></el-icon>商品列表</el-menu-item
+          >
         </router-link>
       </el-menu-item-group>
 
       <el-menu-item-group>
         <template #title></template>
         <router-link to="/indexImg"
-          ><el-menu-item index="1-3"> <el-icon><Picture /></el-icon>设置轮播图</el-menu-item>
+          ><el-menu-item index="1-3">
+            <el-icon><Picture /></el-icon>设置轮播图</el-menu-item
+          >
         </router-link>
       </el-menu-item-group>
-
-
     </el-sub-menu>
 
     <el-sub-menu index="2">
@@ -73,7 +76,13 @@
           >
         </router-link>
       </el-menu-item-group>
-
+      <el-menu-item-group>
+        <router-link to="/orderList"
+          ><el-menu-item index="2-2">
+            <el-icon><Tickets /></el-icon>退货管理</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
     </el-sub-menu>
 
     <el-menu-item index="3" disabled>
@@ -86,8 +95,7 @@
       <template #title>设置</template>
     </el-menu-item>
 
-    <el-menu-item index="4"> </el-menu-item>
-
+    <el-menu-item index="5"> </el-menu-item>
   </el-menu>
 </template>
 
@@ -102,7 +110,7 @@ import {
   Goods,
   Tickets,
   Money,
-  Picture
+  Picture,
 } from "@element-plus/icons-vue";
 
 //折叠开关
