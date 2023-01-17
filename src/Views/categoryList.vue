@@ -2,7 +2,7 @@
   <el-card class="box-card-main">
     <template #header>
       <div class="card-header-top">
-        <el-button type="primary" @click="addIndexImg" round>新增</el-button>
+        <el-button type="primary" @click="goAddCategory" round>新增</el-button>
         <div>
           <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
@@ -57,6 +57,15 @@
 
       <el-table-column prop="categoryName" label="分类名称" width="160" />
 
+      <el-table-column prop="categoryLevel" label="分类等级" width="160">
+        <template #default="scope">
+          <div>
+            <p v-if="scope.row.categoryLevel==1"> 一级分类</p>
+            <p v-if="scope.row.categoryLevel==2"> 二级分类</p>
+            <p v-if="scope.row.categoryLevel==3"> 三级分类</p>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="categorySlogan" label="分类简介" width="300" />
 
       <el-table-column prop="productStatus" label="轮播图导航推荐" width="150">
@@ -65,7 +74,9 @@
             <el-tooltip :content="'点击按钮控制开关'" placement="top">
               <el-switch
                 v-model="scope.row.categoryStar"
-                @click="editStatus(scope.row.categoryId,scope.row.categoryStar)"
+                @click="
+                  editStatus(scope.row.categoryId, scope.row.categoryStar)
+                "
                 style="
                   --el-switch-on-color: #13ce66;
                   --el-switch-off-color: #ff4949;
@@ -75,32 +86,6 @@
               />
             </el-tooltip>
           </div>
-        </template>
-      </el-table-column>
-
-
-      <el-table-column prop="productStatus" label="菠萝推荐" width="150">
-        <template #default="scope">
-          <!-- <div style="display: flex; align-items: center">
-              <p v-if="scope.row.status">启用</p>
-              <p v-else="scope.row.status">关闭</p>
-            </div> -->
-          <div>
-            <span>上架: </span>
-            <el-tooltip :content="'点击按钮控制开关'" placement="top">
-              <el-switch
-                v-model="scope.row.productStatus"
-                @click="editStatus(scope.row.productId,scope.row.productId)"
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
-                :active-value="1"
-                :inactive-value="0"
-              />
-            </el-tooltip>
-          </div>
-
         </template>
       </el-table-column>
 
@@ -115,7 +100,9 @@
             <el-tooltip :content="'点击按钮控制开关'" placement="top">
               <el-switch
                 v-model="scope.row.productStatus"
-                @click="editStatus(scope.row.categoryId,scope.row.productStatus)"
+                @click="
+                  editStatus(scope.row.categoryId, scope.row.productStatus)
+                "
                 style="
                   --el-switch-on-color: #13ce66;
                   --el-switch-off-color: #ff4949;
@@ -125,10 +112,8 @@
               />
             </el-tooltip>
           </div>
-
         </template>
       </el-table-column>
-
 
       <el-table-column prop="url" label="分类图片" width="200">
         <template #default="scope">
@@ -142,10 +127,9 @@
               <el-image
                 style="width: 100px; height: 100px"
                 preview-teleported
-                :src="scope.row.url"
+                :src="scope.row.categoryImg"
                 close-on-press-escape
-                :preview-src-list="Imglist"
-                @click="previewclick(scope.row.categoryImg)"
+                :preview-src-list="[scope.row.categoryImg]"
               />
             </el-tooltip>
           </div>
@@ -170,7 +154,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="editIndexImg(scope.row.imgId)"
+            @click="edit(scope.row.categoryId)"
             >编辑</el-button
           >
         </template>
@@ -193,91 +177,6 @@
       </div>
     </el-card>
   </el-card>
-
-  <!-- 编辑框框 -->
-  <el-dialog
-    v-model="dialogVisibleEdit"
-    title="编辑"
-    width="30%"
-    draggable
-    align-center
-    :show-close="false"
-  >
-    <el-form
-      ref="ruleFormRef"
-      :model="ruleForm"
-      :rules="rules"
-      label-width="auto"
-      class="demo-ruleForm"
-      :size="formSize"
-      status-icon
-      v-loading="loadingEdit"
-    >
-      <el-form-item label="图片名字" prop="imgName">
-        <el-input v-model="ruleForm.imgName" />
-      </el-form-item>
-
-      <el-form-item label="状态" prop="status">
-        <el-tooltip :content="'图片是否显示'" placement="top">
-          <el-switch
-            v-model="ruleForm.status"
-            style="
-              --el-switch-on-color: #13ce66;
-              --el-switch-off-color: #ff4949;
-            "
-            :active-value="1"
-            :inactive-value="0"
-          />
-        </el-tooltip>
-      </el-form-item>
-
-      <el-form-item label="图片" prop="resource">
-        <template #default="scope">
-          <el-upload
-            v-model:file-list="fileList"
-            :http-request="uploadImg"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-exceed="imageIndexnum"
-            :on-remove="removeIndex"
-            accept="image/jpeg,image/gif,image/png"
-            :limit="1"
-          >
-            <el-icon><Plus /></el-icon>
-          </el-upload>
-
-          <el-dialog v-model="dialogVisibleShowImg">
-            <img
-              w-full
-              style="width: 100%; height: 100%"
-              :src="dialogImageUrl"
-            />
-          </el-dialog>
-        </template>
-      </el-form-item>
-
-      <el-form-item label="文字描述" prop="describes">
-        <el-input v-model="ruleForm.describes" type="textarea" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)">
-          确定
-        </el-button>
-        <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="closeEidt">关闭</el-button>
-        <!-- <el-button type="primary" @click="dialogVisible = false">
-              关闭
-            </el-button> -->
-      </span>
-    </template>
-  </el-dialog>
-  <!-- 编辑框框 End -->
 </template>
 
 <script setup lang="ts">
@@ -288,13 +187,11 @@ import {
   FormRules,
   UploadUserFile,
 } from "element-plus";
-import { Delete, Search, Plus, Edit } from "@element-plus/icons-vue";
-import { ref, onMounted, reactive } from "vue";
-import indexImg from "../api/indexImg";
-import goodList from "../api/goodList";
-import upload from "../api/upload";
+import { Delete, Search, Plus } from "@element-plus/icons-vue";
+import { ref, onMounted } from "vue";
+
 import categoryList from "../api/categoryList";
-import orderList from "../api/orderList";
+import { useRouter } from "vue-router";
 
 //生命周期事件，当挂载完毕
 onMounted(() => {
@@ -357,48 +254,6 @@ const currentChange = (val: number) => {
   return getData();
 };
 
-/* 用于控制该表单域下组件的默认尺寸	'large' | 'default' | 'small'	'default' */
-const formSize = ref("default");
-
-const Imglist = reactive([
-  "https://s2.loli.net/2023/01/11/qsFPEVK83XkOYHy.jpg",
-]);
-
-//点击图片多图事件
-const previewclick = async (id: string) => {
-  await goodList.getImgbyId(id).then((res) => {
-    if (res.code == 200) {
-      Imglist.splice(0);
-      for (let i = 0; i < res.data[0].imgList.length; i++) {
-        Imglist.push(res.data[0].imgList[i].url);
-      }
-    } else {
-      Imglist.splice(0);
-      Imglist.push("https://s2.loli.net/2023/01/11/qsFPEVK83XkOYHy.jpg");
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "error",
-      });
-    }
-  });
-};
-//表单验证
-const rules = reactive<FormRules>({
-  imgName: [
-    { required: true, message: "请输入名字", trigger: "blur" },
-    { min: 2, max: 10, message: "大小控制在 2 to 10 字符", trigger: "blur" },
-  ],
-  describes: [{ required: true, message: "请输入文字", trigger: "blur" }],
-});
-
-//重置表单数据
-const ruleFormRef = ref<FormInstance>();
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
-};
-
 //#endregion
 
 //#region  公共事件
@@ -406,158 +261,9 @@ const indexMethod = (index: number) => {
   return index * 1;
 };
 
-//数据初始化
-const ruleForm = ref({
-  imgName: "",
-  status: 0,
-  imgUrl: "",
-  describes: "",
-});
-
-//弹出框图片
-const fileList = ref<UploadUserFile[]>([
-  {
-    name: "",
-    url: "",
-  },
-]);
-
-//弹出框开关
-const dialogVisibleEdit = ref(false);
-
-//弹出框加载动画
-let loadingEdit = ref<boolean>(true);
-
-//上传事件的照片地址
-const dialogImageUrl = ref("");
-
-//点击上传的图片变大
-const dialogVisibleShowImg = ref(false);
-
-//点击查看变大的图片
-const handlePictureCardPreview = (file: UploadFile) => {
-  dialogImageUrl.value = file.url!;
-  dialogVisibleShowImg.value = true;
-};
-
-//弹出层图片数量超出
-const imageIndexnum = () => {
-  return ElMessage({
-    showClose: true,
-    message: "只允许存在一张图片，先删除再上传",
-    type: "error",
-  });
-};
-//弹出层移除图片事件
-const removeIndex = () => {
-  ruleForm.value.imgUrl = "";
-};
-
-// 上传图片事件
-let uploadImg = (file: { file: Blob }) => {
-  upload(file.file).then((res) => {
-    if (res.status == 200) {
-      if (res.data.code === "image_repeated") {
-        ruleForm.value.imgUrl = res.data.images;
-      } else {
-        ruleForm.value.imgUrl = res.data.data.url;
-      }
-      return ElMessage({
-        showClose: true,
-        message: "上传成功",
-        type: "success",
-      });
-    } else {
-      console.log(res);
-
-      ElMessage({
-        showClose: true,
-        message: "图床服务商出错原因是：" + res.data.message,
-        type: "error",
-      });
-    }
-  });
-};
-
-// true 是新增 false 是编辑
-let addOrEdit = ref<boolean>(true);
-
-//新增or编辑事件提交
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  await formEl.validate(async (valid, fields) => {
-    if (valid) {
-      if (addOrEdit.value) {
-        if (ruleForm.value.imgUrl == "") {
-          return ElMessage({
-            showClose: true,
-            message: "图片未加载",
-            type: "error",
-          });
-        }
-        loadingEdit.value = true;
-        await indexImg
-          .PostIndexImgById(ruleForm.value)
-          .then((res) => {
-            if (res.code == 200) {
-              getData();
-              dialogVisibleEdit.value = false;
-              loadingEdit.value = false;
-              return ElMessage({
-                showClose: true,
-                message: res.msg,
-                type: "success",
-              });
-            } else {
-              ElMessage({
-                showClose: true,
-                message: res.msg,
-                type: "error",
-              });
-            }
-          })
-          .catch((err) => {});
-      } else {
-        if (ruleForm.value.imgUrl == "") {
-          return ElMessage({
-            showClose: true,
-            message: "请耐心等待图片加载",
-            type: "error",
-          });
-        }
-        loadingEdit.value = true;
-        await indexImg
-          .putIndexImg(ruleForm.value)
-          .then((res) => {
-            if (res.code == 200) {
-              //刷新一下
-              getData();
-              dialogVisibleEdit.value = false;
-              loadingEdit.value = false;
-              ElMessage({
-                showClose: true,
-                message: res.msg,
-                type: "success",
-              });
-            } else {
-              ElMessage({
-                showClose: true,
-                message: res.msg,
-                type: "error",
-              });
-            }
-          })
-          .catch((res) => {});
-      }
-    } else {
-      console.log("error submit!", fields);
-    }
-  });
-};
-
 //搜索框值
 const searchInputName = ref<string>("");
-const searchInputId = ref<number|null>();
+const searchInputId = ref<number | null>();
 const searchInputSlogan = ref<string>("");
 const searchInputStatus = ref<number>(0);
 //上下架选择框
@@ -616,14 +322,14 @@ const reData = () => {
   searchInputId.value = null;
   searchInputSlogan.value = "";
   searchInputStatus.value = 0;
-}
+};
 
 //#endregion
 
 //#region 删除事件
 //删除根据一条ID进行删除
 const deleteClick = (id: string) => {
-  indexImg.delIndexImg(id).then((res) => {
+  categoryList.delCategory(id).then((res) => {
     if (res.code == 200) {
       loading.value = true;
       getData();
@@ -646,60 +352,34 @@ const deleteClick = (id: string) => {
 //#region 编辑事件
 //点击编辑事件
 
-const editIndexImg = (id: string) => {
-  addOrEdit.value = false;
-  fileList.value.splice(0);
-  indexImg.getIndexImgByid(id).then((res) => {
-    if (res.code == 200) {
-      dialogVisibleEdit.value = true;
-      ruleForm.value = res.data;
-      fileList.value.push({
-        name: ruleForm.value.imgName,
-        url: ruleForm.value.imgUrl,
-      });
-      //加钱优化
-      // loadingEdit.value = false;
-      setTimeout(() => {
-        loadingEdit.value = false;
-      }, 500);
-    } else {
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "error",
-      });
-    }
-  });
-};
+const router = useRouter();
 
-//关闭编辑窗口
-const closeEidt = () => {
-  dialogVisibleEdit.value = false;
-  loadingEdit.value = true;
+const edit = (id: string) => {
+  router.push({ name: "addCategory", query: { categoryId: id } });
 };
 
 //编辑Status状态
-const editStatus = (val:number,star:number) => {
+const editStatus = (val: number, star: number) => {
   loading.value = true;
-  console.log(val,star);
-  
-  categoryList.putcategoryList({ categoryId:val,categoryStar:star}).then((res) => {
-    if (res.code == 200) {
-      loading.value = false;
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "success",
-      });
-    } else {
-      loading.value = false;
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "error",
-      });
-    }
-  });
+  categoryList
+    .putcategoryList({ categoryId: val, categoryStar: star })
+    .then((res) => {
+      if (res.code == 200) {
+        loading.value = false;
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "success",
+        });
+      } else {
+        loading.value = false;
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    });
 };
 
 //#endregion
@@ -707,21 +387,9 @@ const editStatus = (val:number,star:number) => {
 //#region 新增数据
 
 //新增数据事件
-const addIndexImg = () => {
-  addOrEdit.value = true;
-  //数据初始化
-  ruleForm.value = {
-    imgName: "",
-    status: 0,
-    imgUrl: "",
-    describes: "",
-  };
-  //清除图片
-  fileList.value.splice(0);
-  //关闭加载动画
-  loadingEdit.value = false;
-  //打开弹出层
-  dialogVisibleEdit.value = true;
+const Router = useRouter();
+const goAddCategory = () => {
+  Router.push({ path: "/addCategory" });
 };
 
 //#endregion

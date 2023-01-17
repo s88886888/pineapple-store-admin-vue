@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-16 19:37:12
+ * @LastEditTime: 2023-01-18 03:13:31
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -60,15 +60,6 @@
           >
         </router-link>
       </el-menu-item-group>
-
-      <el-menu-item-group>
-        <template #title></template>
-        <router-link to="/indexImg"
-          ><el-menu-item index="1-4">
-            <el-icon><Handbag /></el-icon>设置轮播图</el-menu-item
-          >
-        </router-link>
-      </el-menu-item-group>
     </el-sub-menu>
 
     <el-sub-menu index="2">
@@ -93,17 +84,33 @@
       </el-menu-item-group>
     </el-sub-menu>
 
-    <el-menu-item index="3" disabled>
+    <el-sub-menu index="3">
+      <template #title>
+        <el-icon><Memo /></el-icon>
+        <span>项目管理菜单</span>
+      </template>
+
+      <el-menu-item-group>
+        <template #title></template>
+        <router-link to="/indexImg"
+          ><el-menu-item index="3-1">
+            <el-icon><Handbag /></el-icon>设置轮播图</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+    </el-sub-menu>
+
+    <el-menu-item index="4" disabled>
       <el-icon><document /></el-icon>
       <template #title>用户管理</template>
     </el-menu-item>
 
-    <el-menu-item index="4">
+    <el-menu-item index="5">
       <el-icon><setting /></el-icon>
       <template #title>设置</template>
     </el-menu-item>
 
-    <el-menu-item index="5"> </el-menu-item>
+    <el-menu-item index="6"> </el-menu-item>
   </el-menu>
 </template>
 
@@ -119,7 +126,7 @@ import {
   Tickets,
   Money,
   Picture,
-  Handbag
+  Handbag,
 } from "@element-plus/icons-vue";
 
 //折叠开关
