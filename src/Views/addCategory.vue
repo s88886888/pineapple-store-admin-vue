@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-17 18:45:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-18 05:28:11
+ * @LastEditTime: 2023-01-18 22:53:00
  * @FilePath: \pineapple-admin-vue\src\Views\addCategory.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -36,6 +36,18 @@
           class="demo-ruleForm"
           :size="size"
         >
+          <el-form-item
+            v-if="categoryId != null"
+            label="分类编号"
+            prop="categoryId"
+          >
+            <el-input
+              v-model="ruleForm.categoryId"
+              disabled
+              autocomplete="off"
+            />
+          </el-form-item>
+
           <el-form-item label="分类名称" prop="categoryName">
             <el-input v-model="ruleForm.categoryName" autocomplete="off" />
           </el-form-item>
@@ -76,6 +88,7 @@
           <el-form-item label="分类图片" prop="">
             <template #default="scope">
               <el-upload
+                v-model:file-list="fileList"
                 :http-request="uploadImg"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
@@ -138,9 +151,20 @@
 
           <el-form-item>
             <div class="btnClick">
-              <el-button type="primary" @click="submitForm(ruleFormRef)"
+              <el-button
+                v-if="categoryId != null"
+                type="primary"
+                @click="submitForm(ruleFormRef, true)"
+                >编辑</el-button
+              >
+
+              <el-button
+                v-else
+                type="primary"
+                @click="submitForm(ruleFormRef, false)"
                 >创建</el-button
               >
+
               <el-button class="rbtn" @click="resetForm(ruleFormRef)"
                 >重置</el-button
               >
@@ -154,7 +178,12 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted } from "vue";
-import { FormInstance, ElMessage, UploadFile } from "element-plus";
+import {
+  FormInstance,
+  ElMessage,
+  UploadFile,
+  UploadUserFile,
+} from "element-plus";
 import categoryList from "../api/categoryList";
 import upload from "../api/upload";
 import { useRoute } from "vue-router";
@@ -165,6 +194,7 @@ const categoryLevel = ref(1);
 const categoryId = ref();
 
 onMounted(() => {
+  fileList.value.splice(0);
   categoryId.value = Route.query.categoryId;
 });
 
@@ -212,16 +242,26 @@ watch(categoryId, (val) => {
   if (val != undefined) {
     categoryList.getcategoryById(val).then((res) => {
       if (res.code == 200) {
+        ruleForm.categoryId = res.data.categoryId;
         ruleForm.parentId = res.data.parentId;
-        ruleForm.categoryImg = res.data.categoryId;
+        if (res.data.categoryImg != null) {
+          ruleForm.categoryImg = res.data.categoryImg;
+          fileList.value.push({
+          name: res.data.categoryName,
+          url: res.data.categoryImg,
+        });
+        }
+
         ruleForm.categoryName = res.data.categoryName;
         ruleForm.categorySlogan = res.data.categorySlogan;
         ruleForm.categoryStar = res.data.categoryStar;
         ruleForm.categoryLevel = res.data.categoryLevel;
 
         categoryLevel.value = res.data.categoryLevel;
-        categoryParentId.value=res.data.parentId
-   
+        categoryParentId.value = res.data.parentId;
+
+
+
       } else {
         return ElMessage({
           showClose: true,
@@ -283,9 +323,17 @@ const imageIndexnum = () => {
 //弹出层移除图片事件
 const removeIndex = () => {};
 
+const fileList = ref<UploadUserFile[]>([
+  {
+    name: "",
+    url: "",
+  },
+]);
+
 const ruleFormRef = ref<FormInstance>();
 
 const ruleForm = reactive({
+  categoryId: 0,
   categoryName: "",
   categoryLevel: 0,
   parentId: 0,
@@ -330,25 +378,43 @@ const categoryOptions = reactive([
   },
 ]);
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = (formEl: FormInstance | undefined, type: boolean) => {
   if (!formEl) return;
   formEl.validate((valid) => {
     if (valid) {
-      categoryList.postCategory(ruleForm).then((res) => {
-        if (res.code == 200) {
-          return ElMessage({
-            showClose: true,
-            message: res.msg,
-            type: "success",
-          });
-        } else {
-          return ElMessage({
-            showClose: true,
-            message: res.msg,
-            type: "error",
-          });
-        }
-      });
+      if (type) {
+        categoryList.putcategoryList(ruleForm).then((res) => {
+          if (res.code == 200) {
+            return ElMessage({
+              showClose: true,
+              message: res.msg,
+              type: "success",
+            });
+          } else {
+            return ElMessage({
+              showClose: true,
+              message: res.msg,
+              type: "error",
+            });
+          }
+        });
+      } else {
+        categoryList.postCategory(ruleForm).then((res) => {
+          if (res.code == 200) {
+            return ElMessage({
+              showClose: true,
+              message: res.msg,
+              type: "success",
+            });
+          } else {
+            return ElMessage({
+              showClose: true,
+              message: res.msg,
+              type: "error",
+            });
+          }
+        });
+      }
     } else {
       console.log("error submit!");
       return false;

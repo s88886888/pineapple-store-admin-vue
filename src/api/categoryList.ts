@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-18 03:15:28
+ * @LastEditTime: 2023-01-18 23:00:35
  * @FilePath: \pineapple-admin-vue\src\api\categoryList.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -31,54 +31,61 @@ import axios from '../utils/http'
 
 
 const categoryList = {
-    /**
-     * @description: 获取全部分页数据
-     * @param {*} param
-     * @return {*}
-     */
-    getcategoryList(param: {}) { return axios.get('/category/List', param) },
+   /**
+    * @description: 获取全部分页数据
+    * @param {*} param
+    * @return {*}
+    */
+   getcategoryList(param: {}) { return axios.get('/category/List', param) },
 
 
-    /**
- * @description: 根据ID获取
- * @param {*} param
- * @return {*}
- */
-    getcategoryById(id: string) { return axios.get('/category/getId/' + id) },
+   /**
+* @description: 根据ID获取
+* @param {*} param
+* @return {*}
+*/
+   getcategoryById(id: string) { return axios.get('/category/getId/' + id) },
+
+   /**
+* @description: 根据父类字段ParentId获取
+* @param {*} param
+* @return {*}
+*/
+   getcategoryByParentId(param: {}) { return axios.get('/category/getParentId/',param) },
 
 
-    /**
- * @description: 获取全部分页数据
- * @param {*} param
- * @return {*}
- */
-    getcategoryListByLevel(param: {}) { return axios.get('/category/getlistByLevel', param) },
+   /**
+* @description: 获取全部分页数据
+* @param {*} param
+* @return {*}
+*/
+   getcategoryListByLevel(param: {}) { return axios.get('/category/getlistByLevel', param) },
 
-    /**
-     * @description: 分页获取数据
-     * @param {*} param
-     * @return {*}
-     */
-    getcategoryListPage(param: {}) { return axios.get('/category/SelectPage', param) },
+   /**
+    * @description: 分页获取数据
+    * @param {*} param
+    * @return {*}
+    */
+   getcategoryListPage(param: {}) { return axios.get('/category/SelectPage', param) },
 
-    /**
-     * @description: 修改方法
-     * @return {*}
-     */
-    putcategoryList(param: {}) { return axios.put('/category/', param) },
+   /**
+    * @description: 修改方法
+    * @return {*}
+    */
+   putcategoryList(param: {}) { return axios.put('/category/', param) },
 
-    /**
- * @description: 增加一条新数据
- * @return {*}
- */
-    postCategory(param: {}) { return axios.post('/category/', param) },
+   /**
+* @description: 增加一条新数据
+* @return {*}
+*/
+   postCategory(param: {}) { return axios.post('/category/', param) },
 
-    /**
-     * @description: 删除一条数据
-     * @param {*} param
-     * @return {*}
-     */
-    delCategory(id: String) { return axios.delete('/category/' + id) }
+   /**
+    * @description: 删除一条数据
+    * @param {*} param
+    * @return {*}
+    */
+   delCategory(id: String) { return axios.delete('/category/' + id) }
 
 
 

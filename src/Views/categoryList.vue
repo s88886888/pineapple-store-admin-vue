@@ -33,8 +33,23 @@
           placeholder="分类简介"
           style="width: 200px"
         />
+      </div>
 
-        <el-select v-model="searchInputStatus" placeholder="分类推荐">
+      <div class="card-header-box">
+        <el-select v-model="searchInputlevel" placeholder="分类等级">
+          <el-option
+            v-for="item in levelOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+
+        <el-select
+          style="margin-left: 20px"
+          v-model="searchInputStatus"
+          placeholder="分类推荐"
+        >
           <el-option
             v-for="item in StatusOptions"
             :key="item.value"
@@ -60,15 +75,15 @@
       <el-table-column prop="categoryLevel" label="分类等级" width="160">
         <template #default="scope">
           <div>
-            <p v-if="scope.row.categoryLevel==1"> 一级分类</p>
-            <p v-if="scope.row.categoryLevel==2"> 二级分类</p>
-            <p v-if="scope.row.categoryLevel==3"> 三级分类</p>
+            <p v-if="scope.row.categoryLevel == 1">一级分类</p>
+            <p v-if="scope.row.categoryLevel == 2">二级分类</p>
+            <p v-if="scope.row.categoryLevel == 3">三级分类</p>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="categorySlogan" label="分类简介" width="300" />
+      <el-table-column prop="categorySlogan" label="分类简介" width="400" />
 
-      <el-table-column prop="productStatus" label="轮播图导航推荐" width="150">
+      <el-table-column prop="productStatus" label="轮播图推荐" width="100">
         <template #default="scope">
           <div>
             <el-tooltip :content="'点击按钮控制开关'" placement="top">
@@ -89,35 +104,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="productStatus" label="菠萝优选" width="150">
-        <template #default="scope">
-          <!-- <div style="display: flex; align-items: center">
-              <p v-if="scope.row.status">启用</p>
-              <p v-else="scope.row.status">关闭</p>
-            </div> -->
-          <div>
-            <span>上架: </span>
-            <el-tooltip :content="'点击按钮控制开关'" placement="top">
-              <el-switch
-                v-model="scope.row.productStatus"
-                @click="
-                  editStatus(scope.row.categoryId, scope.row.productStatus)
-                "
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
-                :active-value="1"
-                :inactive-value="0"
-              />
-            </el-tooltip>
-          </div>
-        </template>
-      </el-table-column>
-
       <el-table-column prop="url" label="分类图片" width="200">
         <template #default="scope">
-          <div style="display: flex; align-items: center">
+          <div style="">
             <el-tooltip
               class="box-item"
               effect="dark"
@@ -125,7 +114,7 @@
               placement="top"
             >
               <el-image
-                style="width: 100px; height: 100px"
+                style="width: 120px; height: 120px"
                 preview-teleported
                 :src="scope.row.categoryImg"
                 close-on-press-escape
@@ -157,6 +146,12 @@
             @click="edit(scope.row.categoryId)"
             >编辑</el-button
           >
+          <el-button
+            type="primary"
+            size="small"
+            @click="getDataParentId(scope.row.categoryId)"
+            >下级</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -167,6 +162,7 @@
 
         <div>
           <el-pagination
+            :current-page="current"
             :page-size="size"
             :total="total"
             background
@@ -206,8 +202,8 @@ let tableData = ref([]);
 
 //每次查询多少条
 const size = ref<number>(5);
-//总共有多少页
-const current = ref<number>(1);
+//当前页
+let current = ref<number>(1);
 //总共有多少条
 let total = ref<number>(0);
 
@@ -241,7 +237,6 @@ function getData() {
 //分页器一旦发生改变
 const currentChange = (val: number) => {
   current.value = val;
-
   if (
     searchInputId.value != 0 ||
     searchInputName.value != "" ||
@@ -266,11 +261,12 @@ const searchInputName = ref<string>("");
 const searchInputId = ref<number | null>();
 const searchInputSlogan = ref<string>("");
 const searchInputStatus = ref<number>(0);
-//上下架选择框
+const searchInputlevel = ref<number>(0);
+//分类推荐选择框
 const StatusOptions = [
   {
     value: 0,
-    label: "未选择",
+    label: "分类推荐",
   },
   {
     value: 1,
@@ -279,6 +275,26 @@ const StatusOptions = [
   {
     value: 2,
     label: "菠萝推荐",
+  },
+];
+
+//分类等级选择框
+const levelOptions = [
+  {
+    value: 0,
+    label: "分类等级",
+  },
+  {
+    value: 1,
+    label: "一级分类",
+  },
+  {
+    value: 2,
+    label: "二级分类",
+  },
+  {
+    value: 3,
+    label: "三级分类",
   },
 ];
 
@@ -291,6 +307,7 @@ function indexSearch() {
       Name: searchInputName.value,
       slogan: searchInputSlogan.value,
       Status: searchInputStatus.value,
+      level: searchInputlevel.value,
       current: current.value,
       size: size.value,
     })
@@ -322,8 +339,37 @@ const reData = () => {
   searchInputId.value = null;
   searchInputSlogan.value = "";
   searchInputStatus.value = 0;
+  searchInputlevel.value = 0;
+  current.value = 1;
 };
 
+const getDataParentId = (val: number) => {
+  current.value = 1;
+  categoryList
+    .getcategoryByParentId({
+      parentId: val,
+      current: current.value,
+      size: size.value,
+    })
+    .then((res) => {
+      if (res.code == 200) {
+        tableData.value = res.data.records;
+        current.value = res.data.current;
+        total.value = res.data.total;
+        size.value = res.data.size;
+        //加钱优化
+        setTimeout(() => {
+          loading.value = false;
+        }, 500);
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    });
+};
 //#endregion
 
 //#region 删除事件

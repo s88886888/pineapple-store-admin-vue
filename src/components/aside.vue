@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-18 03:13:31
+ * @LastEditTime: 2023-01-18 21:13:19
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -28,8 +28,6 @@
     default-active="2"
     class="el-menu-vertical"
     :collapse="false"
-    @open="handleOpen"
-    @close="handleClose"
   >
     <el-sub-menu index="1">
       <template #title>
@@ -131,12 +129,8 @@ import {
 
 //折叠开关
 const isCollapse = ref<boolean>(false);
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
+
+
 </script>
 
 <style scoped>
