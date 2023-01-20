@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-18 21:13:19
+ * @LastEditTime: 2023-01-20 21:56:51
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -54,10 +54,20 @@
       <el-menu-item-group>
         <router-link to="/categoryList"
           ><el-menu-item index="1-3"
-            ><el-icon><Money /></el-icon>分类列表</el-menu-item
+            ><el-icon><CreditCard /></el-icon>分类列表</el-menu-item
           >
         </router-link>
       </el-menu-item-group>
+
+
+      <el-menu-item-group>
+        <router-link to="/goodsStock"
+          ><el-menu-item index="1-4"
+            ><el-icon><Box /></el-icon>库存列表</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+      
     </el-sub-menu>
 
     <el-sub-menu index="2">
@@ -73,18 +83,29 @@
           >
         </router-link>
       </el-menu-item-group>
+
+
       <el-menu-item-group>
         <router-link to="/orderList"
           ><el-menu-item index="2-2">
+            <el-icon><Tickets /></el-icon>发货管理</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+
+      <el-menu-item-group>
+        <router-link to="/orderList"
+          ><el-menu-item index="2-3">
             <el-icon><Tickets /></el-icon>退货管理</el-menu-item
           >
         </router-link>
       </el-menu-item-group>
+
     </el-sub-menu>
 
     <el-sub-menu index="3">
       <template #title>
-        <el-icon><Memo /></el-icon>
+        <el-icon><House /></el-icon>
         <span>项目管理菜单</span>
       </template>
 
@@ -92,7 +113,7 @@
         <template #title></template>
         <router-link to="/indexImg"
           ><el-menu-item index="3-1">
-            <el-icon><Handbag /></el-icon>设置轮播图</el-menu-item
+            <el-icon><Picture /></el-icon>设置轮播图</el-menu-item
           >
         </router-link>
       </el-menu-item-group>
@@ -123,8 +144,11 @@ import {
   Goods,
   Tickets,
   Money,
-  Picture,
+  CreditCard,
   Handbag,
+  Box,
+  House,
+  Picture
 } from "@element-plus/icons-vue";
 
 //折叠开关

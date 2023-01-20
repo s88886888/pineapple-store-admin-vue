@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-12 19:14:45
+ * @LastEditTime: 2023-01-19 21:34:04
  * @FilePath: \pineapple-admin-vue\src\api\goodList.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -59,7 +59,7 @@ const goodList = {
 
 
 
-    getGoodListLike(param: {}) { return axios.get('/product/getProductName/' + name, param) },
+    getGoodListLike(param: {}) { return axios.get('/product/getProductName/' , param) },
     /**
     * @description: 根据一条ID进行删除一条数据
     * @param  string
@@ -71,11 +71,14 @@ const goodList = {
     * @param  Array
     * @return: null
     */
-    putGoodList(params: {}) { return axios.put('/product/', params) },
+    putGoodList(data: {}) { return axios.put('/product/', data) },
 
     putGoodListById(data:{}) { return axios.put('/product/updateStatus', data) },
 
-    PostGoodListById(params: {}) { return axios.post('/index-img/', params) },
+    putGoodListByStar(data:{}) { return axios.put('/product/UpdateStar', data) },
+    putGoodListByRecommend(data:{}) { return axios.put('/product/UpdateRecommend', data) },
+
+
 
 
 }

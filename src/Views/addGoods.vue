@@ -144,7 +144,7 @@
 
       <!-- 添加库存 -->
       <el-card class="box-card-GoodsSku" v-show="GoodsSKuShow">
-        <div v-for="o in 4" :key="o" class="text item">
+        <div v-for="o in 8" :key="o" class="text item">
           {{ "List item " + o }}
         </div>
       </el-card>

@@ -4,7 +4,7 @@
       <div class="card-header-top">
         <el-button type="primary" @click="addIndexImg" round>新增</el-button>
         <div>
-          <el-button round>重置数据</el-button>
+          <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
         </div>
       </div>
@@ -96,12 +96,8 @@
 
       <el-table-column prop="categoryName" label="商品分类" width="150" />
 
-      <el-table-column prop="productStatus" label="状态" width="120">
+      <el-table-column label="状态" width="120">
         <template #default="scope">
-          <!-- <div style="display: flex; align-items: center">
-            <p v-if="scope.row.status">启用</p>
-            <p v-else="scope.row.status">关闭</p>
-          </div> -->
           <div>
             <span>上架: </span>
             <el-tooltip :content="'点击按钮控制开关'" placement="top">
@@ -117,12 +113,13 @@
               />
             </el-tooltip>
           </div>
-          <!--           <div>
-            <span>新品: </span>
-            <el-tooltip :content="'点击按钮控制开关'" placement="top">
+
+          <div>
+            <span>轮播: </span>
+            <el-tooltip :content="'设置轮播图分类推荐才会生效'" placement="top">
               <el-switch
-                v-model="scope.row.productStatus"
-                @click="editStatus(scope.row.productId)"
+                v-model="scope.row.productStar"
+                @click="editStar(scope.row.productId)"
                 style="
                   --el-switch-on-color: #13ce66;
                   --el-switch-off-color: #ff4949;
@@ -132,12 +129,13 @@
               />
             </el-tooltip>
           </div>
+
           <div>
-            <span>推荐: </span>
-            <el-tooltip :content="'点击按钮控制开关'" placement="top">
+            <span>优选: </span>
+            <el-tooltip :content="'要先设置优选分类才会生效'" placement="top">
               <el-switch
-                v-model="scope.row.productStatus"
-                @click="editStatus(scope.row.productId)"
+                v-model="scope.row.productPreferred"
+                @click="editRecommend(scope.row.productId)"
                 style="
                   --el-switch-on-color: #13ce66;
                   --el-switch-off-color: #ff4949;
@@ -146,7 +144,7 @@
                 :inactive-value="0"
               />
             </el-tooltip>
-          </div> -->
+          </div>
         </template>
       </el-table-column>
 
@@ -168,9 +166,8 @@
       <el-table-column prop="productStatus" label="推荐类型" width="100">
         <template #default="scope">
           <div>
-            <p v-if="scope.row.productStatus == 1">商品推荐</p>
-            <p v-else-if="scope.row.productStatus == 2">特价商品</p>
-            <p v-else="scope.row.productStatus == 3">分类推荐</p>
+            <p v-if="scope.row.productStar == 1">轮播图推荐</p>
+            <p v-if="scope.row.productPreferred == 1">优选推荐</p>
           </div>
         </template>
       </el-table-column>
@@ -635,6 +632,14 @@ const categoryOptions = reactive([
   },
 ]);
 
+const reData = () => {
+  searchInputId.value = "";
+  searchInputName.value = "";
+  searchInputCategory.value = 0;
+  searchInputContent.value = "";
+  searchInputStatus.value = 1;
+};
+
 //痛苦面具搜索事件
 function indexSearch() {
   loading.value = true;
@@ -734,6 +739,50 @@ const closeEidt = () => {
 const editStatus = (id: string) => {
   loading.value = true;
   goodList.putGoodListById({ productId: id }).then((res) => {
+    if (res.code == 200) {
+      loading.value = false;
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "success",
+      });
+    } else {
+      loading.value = false;
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "error",
+      });
+    }
+  });
+};
+
+//编辑Status状态
+const editStar = (id: string) => {
+  loading.value = true;
+  goodList.putGoodListByStar({ productId: id }).then((res) => {
+    if (res.code == 200) {
+      loading.value = false;
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "success",
+      });
+    } else {
+      loading.value = false;
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "error",
+      });
+    }
+  });
+};
+
+//编辑Status状态
+const editRecommend = (id: string) => {
+  loading.value = true;
+  goodList.putGoodListByRecommend({ productId: id }).then((res) => {
     if (res.code == 200) {
       loading.value = false;
       ElMessage({

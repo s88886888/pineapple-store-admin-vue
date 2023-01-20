@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 20:30:08
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-15 02:51:18
+ * @LastEditTime: 2023-01-20 22:19:06
  * @FilePath: \pineapple-admin-vue\src\utils\dateFormat.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -33,6 +33,9 @@ const createTimeFilter = (cellValue:{createTime:{}})=> {
     return moment(cellValue.createTime).format("YYYY-MM-DD HH:MM:ss");
   }
 }
+
+
+
 
   export default createTimeFilter;
   

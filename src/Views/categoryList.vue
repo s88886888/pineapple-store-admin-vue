@@ -1,3 +1,28 @@
+<!--
+ *  ┌─────────────────────────────────────────────────────────────┐
+ *  │┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐│
+ *  ││Esc│!1 │@2 │#3 │$4 │%5 │^6 │&7 │*8 │(9 │)0 │_- │+= │|\ │`~ ││
+ *  │├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴───┤│
+ *  ││ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │{[ │}] │ BS  ││
+ *  │├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤│
+ *  ││ Ctrl │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│" '│ Enter  ││
+ *  │├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┬───┤│
+ *  ││ Shift  │ Z │ X │ C │ V │ B │ N │ M │< ,│> .│? /│Shift │Fn ││
+ *  │└─────┬──┴┬──┴──┬┴───┴───┴───┴───┴───┴──┬┴───┴┬──┴┬─────┴───┘│
+ *  │      │Fn │ Alt │         Space         │ Alt │Win│   HHKB   │
+ *  │      └───┴─────┴───────────────────────┴─────┴───┘          │
+ *  └─────────────────────────────────────────────────────────────┘
+ * 
+ * @Author: Linson 854700937@qq.com
+ * @Date: 2023-01-16 19:35:12
+ * @LastEditors: Linson 854700937@qq.com
+ * @LastEditTime: 2023-01-20 20:11:49
+ * @FilePath: \pineapple-admin-vue\src\Views\categoryList.vue
+ * @Description: 菠萝电商后台管理系统
+ * 
+ * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
+ -->
+
 <template>
   <el-card class="box-card-main">
     <template #header>
@@ -81,7 +106,26 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="categorySlogan" label="分类简介" width="400" />
+
+      <el-table-column prop="categoryName" label="上级分类" width="160">
+        <template #default="scope">
+          <el-select
+            v-model="scope.row.parentId"
+            class="m-2"
+            placeholder="Select"
+            disabled
+          >
+            <el-option
+              v-for="item in categoryOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="categorySlogan" label="分类简介" width="200" />
 
       <el-table-column prop="productStatus" label="轮播图推荐" width="100">
         <template #default="scope">
@@ -131,7 +175,7 @@
             title="你确定删除吗？"
             confirm-button-text="是"
             cancel-button-text="否"
-            @confirm="deleteClick(scope.row.imgId)"
+            @confirm="deleteClick(scope.row.categoryId)"
             :icon="Delete"
             icon-color="red"
           >
@@ -184,7 +228,7 @@ import {
   UploadUserFile,
 } from "element-plus";
 import { Delete, Search, Plus } from "@element-plus/icons-vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 
 import categoryList from "../api/categoryList";
 import { useRouter } from "vue-router";
@@ -192,6 +236,7 @@ import { useRouter } from "vue-router";
 //生命周期事件，当挂载完毕
 onMounted(() => {
   getData();
+  getcategoryData();
 });
 
 //#region  表单初始化
@@ -206,6 +251,18 @@ const size = ref<number>(5);
 let current = ref<number>(1);
 //总共有多少条
 let total = ref<number>(0);
+
+type categoryop = {
+  value: number;
+  label: string;
+};
+
+const categoryOptions = reactive([
+  {
+    value: 0,
+    label: "无",
+  },
+]);
 
 //查询所有数据
 function getData() {
@@ -232,6 +289,25 @@ function getData() {
     .catch((err) => {
       console.log(err);
     });
+}
+
+function getcategoryData() {
+  categoryList.getcategoryList({}).then((res) => {
+    if (res.code == 200) {
+      for (let i = 0; i < res.data.length; i++) {
+        categoryOptions.push({
+          value: res.data[i].categoryId,
+          label: res.data[i].categoryName,
+        });
+      }
+    } else {
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "error",
+      });
+    }
+  });
 }
 
 //分页器一旦发生改变
@@ -262,6 +338,7 @@ const searchInputId = ref<number | null>();
 const searchInputSlogan = ref<string>("");
 const searchInputStatus = ref<number>(0);
 const searchInputlevel = ref<number>(0);
+const parentId = ref<number>(0);
 //分类推荐选择框
 const StatusOptions = [
   {
@@ -374,7 +451,9 @@ const getDataParentId = (val: number) => {
 
 //#region 删除事件
 //删除根据一条ID进行删除
-const deleteClick = (id: string) => {
+const deleteClick = (id: number) => {
+  console.log(id);
+
   categoryList.delCategory(id).then((res) => {
     if (res.code == 200) {
       loading.value = true;

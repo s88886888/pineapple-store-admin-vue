@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-17 18:45:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-18 22:53:00
+ * @LastEditTime: 2023-01-19 14:43:39
  * @FilePath: \pineapple-admin-vue\src\Views\addCategory.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -135,7 +135,7 @@
                   --el-switch-on-color: #13ce66;
                   --el-switch-off-color: #ff4949;
                 "
-                :active-value="3"
+                :active-value="2"
                 :inactive-value="0"
               />
             </el-tooltip>
