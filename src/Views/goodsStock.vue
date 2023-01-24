@@ -104,7 +104,7 @@
 
       <el-table-column prop="status" label="库存启用" width="100">
         <template #default="scope">
-          <el-tooltip :content="'图片是否显示'" placement="top">
+          <el-tooltip :content="'库存是否显示'" placement="top">
             <el-switch
               v-model="scope.row.status"
               style="
@@ -113,6 +113,7 @@
               "
               :active-value="1"
               :inactive-value="0"
+              @click="clickEdit(scope.row.skuId,scope.row.status)"
             />
           </el-tooltip>
         </template>
@@ -201,7 +202,6 @@
       ref="ruleFormRef"
       :model="ruleForm"
       status-icon
-      label-width="auto"
       class="demo-ruleForm"
     >
       <el-form-item label="库存编号" prop="stock">
@@ -212,9 +212,16 @@
         <el-input disabled v-model="ruleForm.skuName" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item label="增加库存数量" prop="stock">
-        <el-input v-model="ruleForm.stock" autocomplete="off" />
-      </el-form-item>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="例如：输入 +10 或者-10  在原来的库存进行计算修改"
+        placement="top"
+      >
+        <el-form-item label="调整库存数量" prop="stock">
+          <el-input v-model="ruleForm.stock" autocomplete="off" />
+        </el-form-item>
+      </el-tooltip>
     </el-form>
 
     <template #footer>
@@ -306,6 +313,25 @@ const indexMethod = (index: number) => {
   return index * 1;
 };
 
+const clickEdit = (val:string,status:number) => {
+  goodsstock.putGoodsSku({skuId:val,status:status}).then((res) => {
+    if (res.code == 200) {
+
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "success",
+      });
+    } else {
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "error",
+      });
+    }
+  });
+};
+
 //搜索框值
 const searchInputName = ref<string>("");
 const searchInputId = ref<string>();
@@ -389,23 +415,23 @@ const reData = () => {
 //#region 删除事件
 //删除根据一条ID进行删除
 const deleteClick = (id: string) => {
-  goodsstock.delGoodsSkuStock({skuId:id}).then((res) => {
-        if (res.code == 200) {
-          loading.value = true;
-          getData();
-          ElMessage({
-            showClose: true,
-            message: res.msg,
-            type: "success",
-          });
-        } else {
-          ElMessage({
-            showClose: true,
-            message: res.msg,
-            type: "error",
-          });
-        }
+  goodsstock.delGoodsSkuStock({ skuId: id }).then((res) => {
+    if (res.code == 200) {
+      loading.value = true;
+      getData();
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "success",
       });
+    } else {
+      ElMessage({
+        showClose: true,
+        message: res.msg,
+        type: "error",
+      });
+    }
+  });
 };
 //#endregion
 
@@ -473,7 +499,7 @@ const editStock = () => {
   } else {
     return ElMessage({
       showClose: true,
-      message: "仅支持修改数字",
+      message: "修改的格式不正确",
       type: "error",
     });
   }

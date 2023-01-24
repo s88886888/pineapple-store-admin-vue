@@ -16,14 +16,14 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:44:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-21 00:51:57
+ * @LastEditTime: 2023-01-23 19:00:25
  * @FilePath: \pineapple-admin-vue\src\router\index.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  */
 
-import { createRouter, createWebHistory,RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory,RouteRecordRaw } from 'vue-router'
 
 
 const routes:Array<RouteRecordRaw> = [
@@ -84,7 +84,7 @@ const routes:Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes
 })
 

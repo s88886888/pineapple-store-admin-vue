@@ -112,7 +112,6 @@
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"
-      label-width="auto"
       class="demo-ruleForm"
       :size="formSize"
       status-icon

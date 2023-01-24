@@ -236,13 +236,12 @@
       ref="ruleFormRef"
       :model="ruleForm"
       :rules="rules"
-      label-width="auto"
       class="demo-ruleForm"
       :size="formSize"
       status-icon
       v-loading="loadingEdit"
     >
-      <el-form-item label="图片名字" prop="imgName">
+      <el-form-item label="商品名字" prop="imgName">
         <el-input v-model="ruleForm.imgName" />
       </el-form-item>
 
@@ -324,24 +323,9 @@ import indexImg from "../api/indexImg";
 import goodList from "../api/goodList";
 import upload from "../api/upload";
 
-//生命周期事件，当挂载完毕
-onMounted(() => {
-  getData();
-  getCategory();
-});
 
-//#region  表单初始化
-//表单加载动画
-const loading = ref<boolean>(true);
-//表单数据
-let tableData = ref([]);
 
-//每次查询多少条
-const size = ref<number>(5);
-//总共有多少页
-const current = ref<number>(1);
-//总共有多少条
-let total = ref<number>(0);
+
 
 //查询所有数据
 function getData() {
@@ -399,6 +383,30 @@ function getCategory() {
       console.log(err);
     });
 }
+
+
+
+
+
+//生命周期事件，当挂载完毕
+onMounted(async () => {
+ getData();
+ getCategory();
+});
+
+//#region  表单初始化
+//表单加载动画
+const loading = ref<boolean>(true);
+//表单数据
+let tableData = ref([]);
+
+//每次查询多少条
+const size = ref<number>(5);
+//总共有多少页
+const current = ref<number>(1);
+//总共有多少条
+let total = ref<number>(0);
+
 
 //分页器一旦发生改变
 const currentChange = (val: number) => {

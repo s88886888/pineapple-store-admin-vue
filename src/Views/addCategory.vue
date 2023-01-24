@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-17 18:45:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-19 14:43:39
- * @FilePath: \pineapple-admin-vue\src\Views\addCategory.vue
+ * @LastEditTime: 2023-01-23 19:17:56
+ * @FilePath: \pineapple-admin-vue\src\views\addCategory.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -32,7 +32,7 @@
           :model="ruleForm"
           status-icon
           :rules="rules"
-          label-width="auto"
+
           class="demo-ruleForm"
           :size="size"
         >
@@ -126,7 +126,7 @@
               />
             </el-tooltip>
           </el-form-item>
-
+ 
           <el-form-item label="菠萝推荐" prop="status">
             <el-tooltip :content="'菠萝推荐和轮播不能同时进行'" placement="top">
               <el-switch

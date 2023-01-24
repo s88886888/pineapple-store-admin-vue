@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-15 21:51:26
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-16 17:08:08
- * @FilePath: \pineapple-admin-vue\src\Views\orderItem.vue
+ * @LastEditTime: 2023-01-25 03:41:44
+ * @FilePath: \pineapple-admin-vue\src\views\orderItem.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -202,7 +202,7 @@
 
   <!-- 修改备注 -->
   <el-dialog v-model="editVisible" title="修改备注" width="30%" center>
-    <el-form :model="form" label-width="auto">
+    <el-form :model="form" >
       <el-form-item label="备注">
         <el-input v-model="form.orderRemark" type="textarea" />
       </el-form-item>

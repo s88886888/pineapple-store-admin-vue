@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-21 00:29:20
+ * @LastEditTime: 2023-01-23 20:10:33
  * @FilePath: \pineapple-admin-vue\src\api\goodsstock.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -54,6 +54,8 @@ const goodsstock = {
 
 
 
+
+   putGoodsSku(data: {}) { return axios.put('/product-sku/update/', data) },
 
    putGoodsSkuStock(data: {}) { return axios.put('/product-sku/updateStock/', data) },
 
