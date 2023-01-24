@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:40:43
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-12 14:31:34
+ * @LastEditTime: 2023-01-21 00:52:56
  * @FilePath: \pineapple-admin-vue\src\App.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -59,13 +59,3 @@
 import top from "./components/header.vue";
 import menuIndex from "./components/aside.vue";
 </script>
-
-<style >
-/* .box-card-main {
-  margin-top: 10px;
-}
-.container-box{
-  height: 100%;
-} */
-
-</style>
