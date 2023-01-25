@@ -549,8 +549,6 @@ const addGoodImgsListPreview = (file: UploadFile) => {
 const nextTxt = ref<String>("下一步");
 //监听器
 watch(activeSteps, (val) => {
-  console.log(val);
-
   if (val == 0) {
     addGoodsShow.value = true;
     backshow.value = false;
@@ -584,13 +582,35 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             message: "商品库存不可以为空",
             type: "error",
           });
+        } else {
+          const statusIndex = goodsSkuTable.findIndex(
+            (item: { status: string }) => item.status == "1"
+          );
+
+          const skuStarIndex = goodsSkuTable.findIndex(
+            (item: { skuStar: string }) => item.skuStar == "1"
+          );
+
+          if (statusIndex < 0) {
+            return ElMessage({
+              showClose: true,
+              message: "商品库存至少有一个为上架状态",
+              type: "error",
+            });
+          } else if (skuStarIndex != 0) {
+            return ElMessage({
+              showClose: true,
+              message: "请设置默认库存，必须且仅能设置一个",
+              type: "error",
+            });
+          }
         }
 
         ///添加商品主表
-        await addGoods.PostGoods(addGoodsForm).then((res) => {
+        await addGoods.PostGoods(addGoodsForm).then(async (res) => {
           if (res.code == 200) {
             productId.value = res.data.productId;
-            addGoods
+            await addGoods
               .PostGoodImg({
                 isMain: 1,
                 itemId: res.data.productId,
@@ -598,6 +618,28 @@ const submitForm = async (formEl: FormInstance | undefined) => {
               })
               .then((res) => {
                 if (res.code != 200) {
+                  return ElMessage({
+                    showClose: true,
+                    message: res.msg,
+                    type: "error",
+                  });
+                }
+              });
+
+            ///添加库存
+            await addGoods
+              .PostGoodsSku({
+                productId: productId.value,
+                skuList: goodsSkuTable,
+              })
+              .then((res) => {
+                if (res.code == 200) {
+                  ElMessage({
+                    showClose: true,
+                    message: res.msg,
+                    type: "success",
+                  });
+                } else {
                   return ElMessage({
                     showClose: true,
                     message: res.msg,
@@ -633,10 +675,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
               }
             });
         }
-        ///添加商品库存
-
-
-
 
         return;
       }
@@ -719,7 +757,7 @@ const Skuform = reactive({
 });
 
 let sellPrice = computed(() => {
-  return (Skuform.sellPrice = Skuform.originalPrice * Skuform.discounts);
+  return (Skuform.sellPrice = Skuform.originalPrice * Skuform.discounts).toFixed(2);
 });
 
 let goodsSkuTable = reactive<any>([]);
@@ -779,7 +817,6 @@ const editSku = (val: string) => {
   const index = goodsSkuTable.findIndex(
     (item: { skuName: string }) => item.skuName == val
   );
-
   if (index < 0) {
     return ElMessage({
       showClose: true,
@@ -787,8 +824,6 @@ const editSku = (val: string) => {
       type: "error",
     });
   }
-
-  console.log(goodsSkuTable[index]);
 };
 </script>
 

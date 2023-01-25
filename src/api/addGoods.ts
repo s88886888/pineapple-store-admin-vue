@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-25 03:10:51
+ * @LastEditTime: 2023-01-25 17:16:04
  * @FilePath: \pineapple-admin-vue\src\api\addGoods.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -63,7 +63,14 @@ const addGoods = {
      * @param {*} params
      * @return {*}
      */
-        PostGoodImgs(params: {}) { return axios.post('/productimg/addList', params) },
+     PostGoodImgs(params: {}) { return axios.post('/productimg/addList', params) },
+
+     /**
+      * @description: 添加库存
+      * @param {*} params
+      * @return {*}
+      */
+     PostGoodsSku(params: {}) { return axios.post('/product-sku/add', params) },
 
 
 }
