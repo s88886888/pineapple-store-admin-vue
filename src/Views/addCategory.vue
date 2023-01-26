@@ -204,8 +204,6 @@ const categoryLevelChange = (val: number) => {
 
 const ParentIdShow = ref<boolean>(true);
 watch(categoryLevel, (val) => {
-  console.log(val);
-
   if (val == 1) {
     ParentIdShow.value = true;
   } else {
@@ -300,8 +298,6 @@ let uploadImg = (file: { file: Blob }) => {
         type: "success",
       });
     } else {
-      console.log(res);
-
       ElMessage({
         showClose: true,
         message: "图床服务商出错原因是：" + res.data.message,

@@ -14,125 +14,47 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-09 04:44:37
+ * @Date: 2023-01-27 01:27:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 03:40:54
- * @FilePath: \pineapple-admin-vue\src\router\index.ts
+ * @LastEditTime: 2023-01-27 02:14:08
+ * @FilePath: \pineapple-admin-vue\src\store\index.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  */
 
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
 
+import { createStore } from 'vuex' // 引入useStore 方法
 
-const routes: Array<RouteRecordRaw> = [
+export default createStore({
+    state: {
+        visitedView: [{
+            name: "Home",
+            fullPath: "/",
+            path: "/",
+            meta: { keepAlive: false, title: '首页' },
+            query: ''
+        }],
+        num: 0
 
-  {
-    name: 'home',
-    path: '/',
-    meta: {
-      title: '面板',
+        //用户访问过的页面，默认第一个标签为首页
     },
-    component: () => import('../views/home.vue')
-  },
-
-  {
-    name: 'indexGoods',
-    path: '/indexGoods',
-    meta: {
-      title: '面板',
+    mutations: {
+        //用户访问过的页面
+        addVisitedView(state, view) {
+            if (state.visitedView.some(v => v.path === view.path)) return
+            state.visitedView.push(view)
+        },
+        //关闭用户访问过的页面
+        delVisitedView(state, view) {
+            for (const [i, v] of state.visitedView.entries()) {
+                if (v.path === view.path) {
+                    state.visitedView.splice(i, 1)
+                    break
+                }
+            }
+        }
     },
-    component: () => import('../views/indexGoods.vue')
-  },
-  {
-    name: 'indexImg',
-    path: '/indexImg',
-    meta: {
-      title: '轮播图管理',
-    },
-    component: () => import('../views/indexImg.vue')
-  },
-  {
-    path: '/goodsList',
-    name: 'goodsList',
-    meta: {
-      title: '商品管理',
-    },
-
-    component: () => import('../views/goodsList.vue'),
-
-  },
-
-  {
-    name: 'addGoods',
-    path: '/addGoods',
-    meta: {
-      title: '添加商品',
-    },
-    component: () => import('../views/addGoods.vue')
-  },
-  {
-    name: 'updateGoods',
-    path: '/updateGoods',
-    meta: {
-      title: '更新商品',
-    },
-    component: () => import('../views/updateGoods.vue')
-  },
-  {
-    name: 'orderList',
-    path: '/orderList',
-    meta: {
-      title: '订单管理',
-    },
-    component: () => import('../views/orderList.vue')
-  },
-  {
-    name: 'orderItem',
-    path: '/orderItem',
-    meta: {
-      title: '订单详细',
-    },
-    component: () => import('../views/orderItem.vue')
-  },
-  {
-    name: 'categoryList',
-    path: '/categoryList',
-    meta: {
-      title: '分类管理',
-    },
-    component: () => import('../views/categoryList.vue')
-  },
-
-  {
-    name: 'goodsStock',
-    path: '/goodsStock',
-    meta: {
-      title: '商品库存',
-    },
-    component: () => import('../views/goodsStock.vue')
-  },
-
-
-  {
-    name: 'addCategory',
-    path: '/addCategory',
-    meta: {
-      title: '订单详细',
-    },
-    component: () => import('../views/addCategory.vue')
-  },
-
-
-
-];
-
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes
+    actions: {},
+    modules: {}
 })
-
-
-
-export default router

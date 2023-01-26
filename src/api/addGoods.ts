@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-25 17:16:04
+ * @LastEditTime: 2023-01-26 06:12:34
  * @FilePath: \pineapple-admin-vue\src\api\addGoods.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -58,20 +58,32 @@ const addGoods = {
     PostGoodImg(params: {}) { return axios.post('/productimg/', params) },
 
 
-        /**
-     * @description: 添加商品列表图片
+    /**
+ * @description: 添加商品列表图片
+ * @param {*} params
+ * @return {*}
+ */
+    PostGoodImgs(params: {}) { return axios.post('/productimg/addList', params) },
+
+    /**
+     * @description: 添加库存
      * @param {*} params
      * @return {*}
      */
-     PostGoodImgs(params: {}) { return axios.post('/productimg/addList', params) },
+    PostGoodsSku(params: {}) { return axios.post('/product-sku/add', params) },
 
-     /**
-      * @description: 添加库存
-      * @param {*} params
-      * @return {*}
-      */
-     PostGoodsSku(params: {}) { return axios.post('/product-sku/add', params) },
 
+    GetGoodsById(id: string) { return axios.get('/product/getImgLisbyId/' + id) },
+
+    getGoodsSkuByItemId(params: {}) { return axios.get('/product-sku/getItemId', params) },
+
+    PutGoods(param: {}) { return axios.put('/product/', param) },
+
+    PutGoodsImg(param: {}) { return axios.put('/productimg/updateUrl', param) },
+
+    DeleteGoodsImg(Id:string) { return axios.delete('/productimg/'+Id,{}) },
+
+    DeleteGoodsSku(param:{}) { return axios.delete('/product-sku/delete/',param) },
 
 }
 

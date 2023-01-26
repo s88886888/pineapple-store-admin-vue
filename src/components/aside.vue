@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-20 21:56:51
+ * @LastEditTime: 2023-01-26 21:42:33
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -85,9 +85,9 @@
       </el-menu-item-group>
 
 
-      <el-menu-item-group>
+      <el-menu-item-group disabled>
         <router-link to="/orderList"
-          ><el-menu-item index="2-2">
+          ><el-menu-item index="2-2" disabled>
             <el-icon><Tickets /></el-icon>发货管理</el-menu-item
           >
         </router-link>
@@ -95,7 +95,7 @@
 
       <el-menu-item-group>
         <router-link to="/orderList"
-          ><el-menu-item index="2-3">
+          ><el-menu-item index="2-3" disabled>
             <el-icon><Tickets /></el-icon>退货管理</el-menu-item
           >
         </router-link>
@@ -114,6 +114,26 @@
         <router-link to="/indexImg"
           ><el-menu-item index="3-1">
             <el-icon><Picture /></el-icon>设置轮播图</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+
+
+      <el-menu-item-group>
+        <template #title></template>
+        <router-link to="/indexImg"
+          ><el-menu-item index="3-2" disabled>
+            <el-icon><Picture /></el-icon>设置退货理由</el-menu-item
+          >
+        </router-link>
+      </el-menu-item-group>
+
+
+      <el-menu-item-group>
+        <template #title></template>
+        <router-link to="/indexImg"
+          ><el-menu-item index="3-3" disabled>
+            <el-icon><Picture /></el-icon>设置首页广告</el-menu-item
           >
         </router-link>
       </el-menu-item-group>

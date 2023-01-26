@@ -2,7 +2,7 @@
   <el-card class="box-card-main">
     <template #header>
       <div class="card-header-top">
-        <el-button type="primary" @click="addIndexImg" round>新增</el-button>
+        <el-button type="primary" @click="add" round>新增</el-button>
         <div>
           <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
@@ -104,10 +104,7 @@
               <el-switch
                 v-model="scope.row.productStatus"
                 @click="editStatus(scope.row.productId)"
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
+                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -120,10 +117,7 @@
               <el-switch
                 v-model="scope.row.productStar"
                 @click="editStar(scope.row.productId)"
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
+                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -136,10 +130,7 @@
               <el-switch
                 v-model="scope.row.productPreferred"
                 @click="editRecommend(scope.row.productId)"
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
+                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -154,7 +145,7 @@
             type="primary"
             :icon="Edit"
             circle
-            @click="editIndexImg(scope.row.imgId)"
+            @click="edit(scope.row.imgId)"
           ></el-button>
         </template>
       </el-table-column>
@@ -185,7 +176,7 @@
             title="你确定删除吗？"
             confirm-button-text="是"
             cancel-button-text="否"
-            @confirm="deleteClick(scope.row.imgId)"
+            @confirm="deleteClick(scope.row.productId)"
             :icon="Delete"
             icon-color="red"
           >
@@ -197,7 +188,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="editIndexImg(scope.row.imgId)"
+            @click="edit(scope.row.productId)"
             >编辑</el-button
           >
         </template>
@@ -322,10 +313,7 @@ import createTimeFilter from "../utils/dateFormat";
 import indexImg from "../api/indexImg";
 import goodList from "../api/goodList";
 import upload from "../api/upload";
-
-
-
-
+import { useRouter } from "vue-router";
 
 //查询所有数据
 function getData() {
@@ -384,14 +372,10 @@ function getCategory() {
     });
 }
 
-
-
-
-
 //生命周期事件，当挂载完毕
 onMounted(async () => {
- getData();
- getCategory();
+  getData();
+  getCategory();
 });
 
 //#region  表单初始化
@@ -406,7 +390,6 @@ const size = ref<number>(5);
 const current = ref<number>(1);
 //总共有多少条
 let total = ref<number>(0);
-
 
 //分页器一旦发生改变
 const currentChange = (val: number) => {
@@ -528,8 +511,6 @@ let uploadImg = (file: { file: Blob }) => {
         type: "success",
       });
     } else {
-      console.log(res);
-
       ElMessage({
         showClose: true,
         message: "图床服务商出错原因是：" + res.data.message,
@@ -711,30 +692,8 @@ const deleteClick = (id: string) => {
 
 //#region 编辑事件
 //点击编辑事件
-const editIndexImg = (id: string) => {
-  addOrEdit.value = false;
-  fileList.value.splice(0);
-  indexImg.getIndexImgByid(id).then((res) => {
-    if (res.code == 200) {
-      dialogVisibleEdit.value = true;
-      ruleForm.value = res.data;
-      fileList.value.push({
-        name: ruleForm.value.imgName,
-        url: ruleForm.value.imgUrl,
-      });
-      //加钱优化
-      // loadingEdit.value = false;
-      setTimeout(() => {
-        loadingEdit.value = false;
-      }, 500);
-    } else {
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "error",
-      });
-    }
-  });
+const edit = (id: string) => {
+  router.push({ path: "/updateGoods", query: { productId: id } });
 };
 
 //关闭编辑窗口
@@ -813,22 +772,10 @@ const editRecommend = (id: string) => {
 
 //#region 新增数据
 
+const router = useRouter();
 //新增数据事件
-const addIndexImg = () => {
-  addOrEdit.value = true;
-  //数据初始化
-  ruleForm.value = {
-    imgName: "",
-    status: 0,
-    imgUrl: "",
-    describes: "",
-  };
-  //清除图片
-  fileList.value.splice(0);
-  //关闭加载动画
-  loadingEdit.value = false;
-  //打开弹出层
-  dialogVisibleEdit.value = true;
+const add = () => {
+  router.push("/addGoods");
 };
 
 //#endregion

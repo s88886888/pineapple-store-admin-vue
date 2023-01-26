@@ -165,7 +165,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="edit(scope.row.categoryId)"
+            @click="edit(scope.row.productId)"
             >编辑</el-button
           >
 
@@ -451,7 +451,7 @@ let ruleForm = reactive({
 const router = useRouter();
 
 const edit = (id: string) => {
-  router.push({ name: "addCategory", query: { categoryId: id } });
+  router.push({ name: "updateGoods", query: { productId: id } });
 };
 
 const editStockShow = (val: string) => {

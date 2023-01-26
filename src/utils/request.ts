@@ -61,9 +61,6 @@ request.interceptors.response.use(response => {
   return response.data
 }, error => {
   const { status } = error.response
-
-  console.log(status);
-  
   if (status === 401) { // token失效
     // this.$Message.error('token失效，请重新登录')
     // 清除token

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:40:43
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-21 00:52:56
+ * @LastEditTime: 2023-01-27 03:26:27
  * @FilePath: \pineapple-admin-vue\src\App.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -30,25 +30,12 @@
     </el-header>
 
     <el-container class="container-box">
-        <el-aside width="auto">
-          <menuIndex></menuIndex>
-        </el-aside>
+      <el-aside width="auto">
+        <menuIndex></menuIndex>
+      </el-aside>
 
       <el-main>
-
-        <div calass="container">
-          <el-card class="box-card">
-            <el-breadcrumb class="container-breadcrumb" separator="/">
-              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item><a href="/">页面1</a></el-breadcrumb-item>
-            </el-breadcrumb>
-          </el-card>
-
-          <div class="container-main">
-            <RouterView />
-          </div>
-        </div>
-        
+        <navHead></navHead>
       </el-main>
 
     </el-container>
@@ -58,4 +45,5 @@
 <script lang="ts" setup>
 import top from "./components/header.vue";
 import menuIndex from "./components/aside.vue";
+import navHead from "./components/navHead.vue";
 </script>

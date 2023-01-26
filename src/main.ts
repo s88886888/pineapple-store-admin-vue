@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:40:43
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-14 22:46:46
+ * @LastEditTime: 2023-01-27 03:27:44
  * @FilePath: \pineapple-admin-vue\src\main.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -40,14 +40,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 3、vue-axios是axios集成到Vue.js的小包装器，可以像插件一样安装:Vue.use(vueAxios);
 import VueAxios from 'vue-axios'
 import axios from "axios";
-
-
 import locale from "element-plus/lib/locale/lang/zh-cn";//饿了么ui中文
-
-
-
-
-
+import store from './store/index'
 
 
 const app = createApp(App)
@@ -55,6 +49,8 @@ app.use(router)
 app.use(ElementPlus,{locale})
 app.mount('#app')
 app.use(VueAxios, axios)
+app.use(store)
+
 
 //axios 全局注册
 app.config.globalProperties.$axios = axios;

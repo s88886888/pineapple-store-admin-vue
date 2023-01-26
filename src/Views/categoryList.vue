@@ -452,8 +452,6 @@ const getDataParentId = (val: number) => {
 //#region 删除事件
 //删除根据一条ID进行删除
 const deleteClick = (id: number) => {
-  console.log(id);
-
   categoryList.delCategory(id).then((res) => {
     if (res.code == 200) {
       loading.value = true;
