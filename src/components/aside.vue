@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-26 21:42:33
+ * @LastEditTime: 2023-01-27 20:41:13
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -27,7 +27,7 @@
   <el-menu
     default-active="2"
     class="el-menu-vertical"
-    :collapse="false"
+    :collapse="isCollapse"
   >
     <el-sub-menu index="1">
       <template #title>
@@ -59,7 +59,6 @@
         </router-link>
       </el-menu-item-group>
 
-
       <el-menu-item-group>
         <router-link to="/goodsStock"
           ><el-menu-item index="1-4"
@@ -67,7 +66,6 @@
           >
         </router-link>
       </el-menu-item-group>
-      
     </el-sub-menu>
 
     <el-sub-menu index="2">
@@ -84,7 +82,6 @@
         </router-link>
       </el-menu-item-group>
 
-
       <el-menu-item-group disabled>
         <router-link to="/orderList"
           ><el-menu-item index="2-2" disabled>
@@ -100,7 +97,6 @@
           >
         </router-link>
       </el-menu-item-group>
-
     </el-sub-menu>
 
     <el-sub-menu index="3">
@@ -113,11 +109,11 @@
         <template #title></template>
         <router-link to="/indexImg"
           ><el-menu-item index="3-1">
-            <el-icon><Picture /></el-icon>设置轮播图</el-menu-item
+            <el-icon><Picture /></el-icon>
+            <p>设置轮播图</p></el-menu-item
           >
         </router-link>
       </el-menu-item-group>
-
 
       <el-menu-item-group>
         <template #title></template>
@@ -127,7 +123,6 @@
           >
         </router-link>
       </el-menu-item-group>
-
 
       <el-menu-item-group>
         <template #title></template>
@@ -144,10 +139,16 @@
       <template #title>用户管理</template>
     </el-menu-item>
 
-    <el-menu-item index="5">
-      <el-icon><setting /></el-icon>
-      <template #title>设置</template>
-    </el-menu-item>
+    <el-sub-menu index="5">
+      <template #title>
+        <el-icon><setting /></el-icon>
+        <span>设置</span>
+      </template>
+
+      <el-menu-item-group>
+        <el-menu-item index="1-3" @click="AsideUIShow">折叠</el-menu-item>
+      </el-menu-item-group>
+    </el-sub-menu>
 
     <el-menu-item index="6"> </el-menu-item>
   </el-menu>
@@ -168,11 +169,15 @@ import {
   Handbag,
   Box,
   House,
-  Picture
+  Picture,
 } from "@element-plus/icons-vue";
 
 //折叠开关
 const isCollapse = ref<boolean>(false);
+
+const AsideUIShow = () => {
+  isCollapse.value = !isCollapse.value;
+};
 
 
 </script>

@@ -104,7 +104,10 @@
               <el-switch
                 v-model="scope.row.productStatus"
                 @click="editStatus(scope.row.productId)"
-                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
+                style="
+                  --el-switch-on-color: #13ce66;
+                  --el-switch-off-color: #ff4949;
+                "
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -117,7 +120,10 @@
               <el-switch
                 v-model="scope.row.productStar"
                 @click="editStar(scope.row.productId)"
-                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
+                style="
+                  --el-switch-on-color: #13ce66;
+                  --el-switch-off-color: #ff4949;
+                "
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -130,7 +136,10 @@
               <el-switch
                 v-model="scope.row.productPreferred"
                 @click="editRecommend(scope.row.productId)"
-                style="--el-switch-on-color: #13ce66;--el-switch-off-color: #ff4949;"
+                style="
+                  --el-switch-on-color: #13ce66;
+                  --el-switch-off-color: #ff4949;
+                "
                 :active-value="1"
                 :inactive-value="0"
               />
@@ -198,7 +207,7 @@
     <el-card class="box-card-footer">
       <div class="box-footer">
         <div>
-          <el-input placeholder="Please input" />
+          <!-- <el-input placeholder="Please input" /> -->
         </div>
 
         <div>
@@ -670,22 +679,10 @@ function indexSearch() {
 //#region 删除事件
 //删除根据一条ID进行删除
 const deleteClick = (id: string) => {
-  indexImg.delIndexImg(id).then((res) => {
-    if (res.code == 200) {
-      loading.value = true;
-      getData();
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "success",
-      });
-    } else {
-      ElMessage({
-        showClose: true,
-        message: res.msg,
-        type: "error",
-      });
-    }
+  return ElMessage({
+    showClose: true,
+    message: "不允许删除，只允许下架",
+    type: "error",
   });
 };
 //#endregion
