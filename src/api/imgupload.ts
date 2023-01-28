@@ -14,45 +14,31 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-10 14:18:58
+ * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-28 17:08:07
- * @FilePath: \pineapple-admin-vue\src\api\upload.ts
+ * @LastEditTime: 2023-01-28 21:22:29
+ * @FilePath: \pineapple-admin-vue\src\api\imgupload.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  */
 
-import axios from 'axios'
 
-
-const upload = (file: any) => {
-
-  const formData = new FormData();
-
-  formData.append("smfile", file);
-  return axios.post("/img/upload", formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": "7wpJzgLrTYle9dxDhb1BIsZfHtSjyqao",
-      },
-    });
-
-  // 备用图床
-  /*     formData.append("image", file.file);
-    axios
-      .post("/img/upload", formData, {
+import axios from '../utils/http'
+const imgupload = (file:any)=>{
+    const formData = new FormData();
+    formData.append("file", file);
+    return axios.post("/upload", formData,
+      {
         headers: {
           "Content-Type": "multipart/form-data",
-          
         },
-      })
-      .then((res) => {
-        console.log(res);
-      }); */
+      });
+}
 
-};
+export default imgupload
 
 
-export default upload
+
+
+

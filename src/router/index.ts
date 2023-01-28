@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:44:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 03:40:54
+ * @LastEditTime: 2023-01-28 17:41:25
  * @FilePath: \pineapple-admin-vue\src\router\index.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -36,15 +36,6 @@ const routes: Array<RouteRecordRaw> = [
     },
     component: () => import('../views/home.vue')
   },
-
-  {
-    name: 'indexGoods',
-    path: '/indexGoods',
-    meta: {
-      title: '面板',
-    },
-    component: () => import('../views/indexGoods.vue')
-  },
   {
     name: 'indexImg',
     path: '/indexImg',
@@ -59,9 +50,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '商品管理',
     },
-
     component: () => import('../views/goodsList.vue'),
-
   },
 
   {
@@ -104,7 +93,6 @@ const routes: Array<RouteRecordRaw> = [
     },
     component: () => import('../views/categoryList.vue')
   },
-
   {
     name: 'goodsStock',
     path: '/goodsStock',
@@ -113,8 +101,6 @@ const routes: Array<RouteRecordRaw> = [
     },
     component: () => import('../views/goodsStock.vue')
   },
-
-
   {
     name: 'addCategory',
     path: '/addCategory',
@@ -123,9 +109,14 @@ const routes: Array<RouteRecordRaw> = [
     },
     component: () => import('../views/addCategory.vue')
   },
-
-
-
+  {
+    name: 'imgdemo',
+    path: '/imgdemo',
+    meta: {
+      title: '图片测试',
+    },
+    component: () => import('../views/imgdemo.vue')
+  },
 ];
 
 const router = createRouter({

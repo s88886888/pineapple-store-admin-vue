@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:40:43
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-16 17:10:39
+ * @LastEditTime: 2023-01-27 23:21:51
  * @FilePath: \pineapple-admin-vue\vite.config.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -29,7 +29,6 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-
   server: {
     hmr:true,
     port: 8999,
@@ -40,7 +39,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/img": {
-        target: "https://smms.app/api/v2",
+        target: "https://smms.app/api/v2/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/img/, ""),
       },

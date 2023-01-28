@@ -119,6 +119,7 @@
           class="demo-ruleForm"
         >
           <el-form-item label="照片" prop="url">
+            
             <el-upload
               v-model:file-list="addGoodImgsList"
               :http-request="uploadImg"

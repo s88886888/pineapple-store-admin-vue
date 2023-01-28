@@ -243,8 +243,6 @@ import { useRouter } from "vue-router";
 
 import goodsstock from "../api/goodsstock";
 
-import { ElMessageBox } from "element-plus";
-
 //生命周期事件，当挂载完毕
 onMounted(() => {
   getData();
