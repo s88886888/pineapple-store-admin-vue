@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-15 03:09:41
+ * @LastEditTime: 2023-03-05 17:24:10
  * @FilePath: \pineapple-admin-vue\src\api\orderList.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -32,23 +32,30 @@ import axios from '../utils/http'
 
 const orderList = {
 
-    /**
-      * @description: 查询分页查询
-      * @param  null
-      * @return: 数组
-      */
-
-    getorderListPage(param: {}) { return axios.get('/orders/Page', param) },
-
-
-
-
-    /**
-    * @description: 根据一条ID进行删除一条数据
-    * @param  string
-    * @return: null
+  /**
+    * @description: 查询分页查询
+    * @param  null
+    * @return: 数组
     */
-    delorderList(id: string) { return axios.delete('/orders/' + id) },
+
+  getorderListPage(param: {}) { return axios.get('/orders/Page', param) },
+
+
+
+
+  /**
+  * @description: 根据一条ID进行删除一条数据
+  * @param  string
+  * @return: null
+  */
+  delorderList(id: string) { return axios.delete('/orders/' + id) },
+
+  /**
+* @description: 发货
+* @param  Array
+* @return: null
+*/
+  seedOrder(data:{}) { return axios.put('/orders/seedOrder',data)}
 
 
 

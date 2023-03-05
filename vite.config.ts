@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:40:43
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 23:21:51
+ * @LastEditTime: 2023-03-04 21:05:00
  * @FilePath: \pineapple-admin-vue\vite.config.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -31,7 +31,7 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     hmr:true,
-    port: 8999,
+    port: 8099,
     proxy: {
       "/api": {
         target: "http://localhost:8081",

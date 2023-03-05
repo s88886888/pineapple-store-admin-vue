@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 20:41:13
+ * @LastEditTime: 2023-03-05 16:14:22
  * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -82,9 +82,9 @@
         </router-link>
       </el-menu-item-group>
 
-      <el-menu-item-group disabled>
-        <router-link to="/orderList"
-          ><el-menu-item index="2-2" disabled>
+      <el-menu-item-group >
+        <router-link to="/deliverGoodsList"
+          ><el-menu-item index="2-2" >
             <el-icon><Tickets /></el-icon>发货管理</el-menu-item
           >
         </router-link>

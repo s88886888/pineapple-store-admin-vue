@@ -110,6 +110,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/addCategory.vue')
   },
   {
+    name: 'delivergoodslist',
+    path: '/deliverGoodsList',
+    meta: {
+      title: '发货管理',
+    },
+    component: () => import('../views/deliverGoodsList.vue')
+  },
+  {
     name: 'imgdemo',
     path: '/imgdemo',
     meta: {

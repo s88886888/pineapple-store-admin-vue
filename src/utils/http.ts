@@ -47,7 +47,7 @@ const http ={
    
         return request(config)
     },
-    post(url:string,data:{},headers?:{}){
+    post(url:string,data:{}|[],headers?:{}){
         const config = {
             method: 'post',
             url:url,

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-15 21:51:26
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-25 03:41:44
+ * @LastEditTime: 2023-03-05 17:40:21
  * @FilePath: \pineapple-admin-vue\src\views\orderItem.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -31,7 +31,7 @@
         <el-steps :active="activeStrps" align-center finish-status="success">
           <el-step title="提交订单" :description="createTime" />
           <el-step title="支付订单" :description="payTime" />
-          <el-step title="平台发货" />
+          <el-step title="平台发货" :description="deliveryTime"/>
           <el-step title="确认收货" />
           <el-step title="完成评价" />
         </el-steps>
@@ -245,6 +245,7 @@ const router = useRouter();
 const money = ref<number>(0);
 const createTime = ref();
 const payTime = ref();
+const deliveryTime = ref();
 let activeStrps = ref<number>(1);
 const orderId = ref();
 let orderStuts = ref();
@@ -288,7 +289,13 @@ function getOrderitem() {
         activeStrps.value = 2;
       }
 
+      if (res.data[0].deliveryTime != null) {
+        deliveryTime.value = createTimeFilter({ createTime: res.data[0].deliveryTime });
+        activeStrps.value = 3;
+      }
+
       productList.value = res.data[0].productList;
+      
     } else {
       ElMessage({
         showClose: true,

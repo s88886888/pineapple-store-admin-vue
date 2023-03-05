@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 11:03:39
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-15 20:40:34
+ * @LastEditTime: 2023-03-05 17:31:44
  * @FilePath: \pineapple-admin-vue\src\utils\request.ts
  * @Description: 菠萝电商后台管理系统
  * 
@@ -30,7 +30,7 @@ import axios from 'axios'
 
 const request = axios.create({
   baseURL: '/api',
-  timeout: 2000
+  timeout: 60000
 })
 
 
