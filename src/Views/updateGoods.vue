@@ -63,16 +63,18 @@
           <el-form-item label="商品图片" prop="url" required>
             <template #default="scope">
               <el-upload
-                v-model:file-list="fileList"
-                :http-request="uploadImg"
+                action="/api/upload/"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :on-exceed="imageIndexnum"
-                :on-remove="removeIndex"
+                :on-remove="removeGoodsImg"
+                :on-success="successGoodsImg"
                 accept="image/jpeg,image/gif,image/png"
                 :limit="1"
               >
-                <el-icon><Plus /></el-icon>
+                <el-icon>
+                  <Plus />
+                </el-icon>
               </el-upload>
 
               <el-dialog v-model="dialogVisibleShowImg">
@@ -119,17 +121,20 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="商品其他图片" prop="url">
+          <el-form-item label="照片" prop="url">
             <el-upload
               v-model:file-list="addGoodImgsList"
-              :http-request="uploadImg"
+              action="/api/upload/"
               multiple
               drag
               list-type="picture-card"
               :on-preview="addGoodImgsListPreview"
+              :on-success="successGoodsImgList"
               :on-remove="removeIndex"
             >
-              <el-icon><Plus /></el-icon>
+              <el-icon>
+                <Plus />
+              </el-icon>
             </el-upload>
 
             <el-dialog v-model="GoodImgsVisible">
@@ -431,37 +436,6 @@ const activeSteps = ref<number>(0);
 
 const nextBtShow = ref<boolean>(false);
 
-// 上传图片事件
-let uploadImg = (file: { file: any }) => {
-  upload(file.file).then((res) => {
-    if (res.status == 200) {
-      if (res.data.code === "image_repeated") {
-        if (activeSteps.value == 0) {
-          addGoodsForm.url = res.data.images;
-        } else {
-          AddGoodsImgForm.push({ uid: file.file.uid, url: res.data.images });
-        }
-      } else {
-        if (activeSteps.value == 0) {
-          addGoodsForm.url = res.data.data.url;
-        } else {
-          AddGoodsImgForm.push({ uid: file.file.uid, url: res.data.data.url });
-        }
-      }
-      return ElMessage({
-        showClose: true,
-        message: "上传成功",
-        type: "success",
-      });
-    } else {
-      ElMessage({
-        showClose: true,
-        message: "图床服务商出错原因是：" + res.data.message,
-        type: "error",
-      });
-    }
-  });
-};
 
 //点击查看变大的图片
 const handlePictureCardPreview = (file: UploadFile) => {
@@ -470,20 +444,12 @@ const handlePictureCardPreview = (file: UploadFile) => {
 };
 
 //弹出层移除图片事件
-const removeIndex = (file: UploadFile) => {
-  if (activeSteps.value == 0) {
-    addGoodsForm.url = "";
-  } else {
-    const index = AddGoodsImgForm.findIndex((val) => val.uid == file.uid);
-
-    addGoods.DeleteGoodsImg(file.name).then((res) => {
-      if (res.code == 200) {
-        console.log("删除成功");
-      }
-    });
-
-    AddGoodsImgForm.splice(index, 1);
-  }
+const removeIndex = (file: any) => {
+  const index = AddGoodsImgForm.findIndex(
+    (val) => val.url == file.response.data
+  );
+  AddGoodsImgForm.splice(index, 1);
+  // console.log(AddGoodsImgForm);
 };
 
 //弹出层图片数量超出
@@ -582,15 +548,24 @@ const GoodsSKuShow = ref<boolean>(false);
 
 const AddGoodsImgShow = ref<boolean>(false);
 
+const removeGoodsImg = () => {
+  addGoodsForm.url = "";
+};
+
+//上传图片新版本
+const successGoodsImg = (res: any) => {
+  addGoodsForm.url = res.data;
+};
+
 type GoodsImgsType = {
   id?: string;
   itemId?: string;
   del?: number;
-  uid: number;
+  uid?: number;
   url: string;
 };
 
-const AddGoodsImgForm = reactive<GoodsImgsType[]>([{ uid: 0, url: "" }]);
+const AddGoodsImgForm = reactive<GoodsImgsType[]>([]);
 
 const addGoodImgsList = ref<UploadUserFile[]>([
   {
@@ -671,9 +646,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           }
         }
 
-        ///商品主表
+        ///商品主表 qwq
         await addGoods.PutGoods(addGoodsForm).then(async (res) => {
           if (res.code == 200) {
+            
             productId.value = res.data.productId;
 
             await addGoods
@@ -725,25 +701,24 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         });
         ///添加商品图片列表
 
-          await addGoods
-            .PostGoodImgs({ itemId: productId.value, imgList: AddGoodsImgForm })
-            .then((res) => {
-              if (res.code == 200) {
-                AddGoodsImgForm.splice(0);
-                ElMessage({
-                  showClose: true,
-                  message: res.msg,
-                  type: "success",
-                });
-              } else {
-                ElMessage({
-                  showClose: true,
-                  message: "商品库存不可以为空",
-                  type: "error",
-                });
-              }
-            });
-        
+        await addGoods
+          .PostGoodImgs({ itemId: productId.value, imgList: AddGoodsImgForm })
+          .then((res) => {
+            if (res.code == 200) {
+              AddGoodsImgForm.splice(0);
+              ElMessage({
+                showClose: true,
+                message: res.msg,
+                type: "success",
+              });
+            } else {
+              ElMessage({
+                showClose: true,
+                message: "商品库存不可以为空",
+                type: "error",
+              });
+            }
+          });
 
         return;
       }
@@ -878,8 +853,6 @@ const reSkuData = (formEl: FormInstance | undefined) => {
 };
 
 const delSku = (val: string, Id: String) => {
-
-
   // const delindex = goodsSkuTable.findIndex(
   //   (item: { skuName: string }) => item.skuName == val
   // );
@@ -887,10 +860,14 @@ const delSku = (val: string, Id: String) => {
   // goodsSkuTable.splice(delindex, 1);
 
   if (Id != null) {
-    addGoods.DeleteGoodsSku({ skuId: Id }).then(res=>{
-      alert(res.msg)
+    addGoods.DeleteGoodsSku({ skuId: Id }).then((res) => {
+      alert(res.msg);
     });
   }
+
+  const successGoodsImgList = (res: any) => {
+    AddGoodsImgForm.push({ url: res.data });
+  };
 
   // for(let i =0; i<goodsSkuTable.length;i++)
   // {

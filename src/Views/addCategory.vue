@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-17 18:45:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-23 19:17:56
+ * @LastEditTime: 2023-04-05 18:04:09
  * @FilePath: \pineapple-admin-vue\src\views\addCategory.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -32,7 +32,6 @@
           :model="ruleForm"
           status-icon
           :rules="rules"
-
           class="demo-ruleForm"
           :size="size"
         >
@@ -89,11 +88,12 @@
             <template #default="scope">
               <el-upload
                 v-model:file-list="fileList"
-                :http-request="uploadImg"
+                action="/api/upload/"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :on-exceed="imageIndexnum"
                 :on-remove="removeIndex"
+                :on-success="successGoodsImgList"
                 accept="image/jpeg,image/gif,image/png"
                 :limit="1"
               >
@@ -126,7 +126,7 @@
               />
             </el-tooltip>
           </el-form-item>
- 
+
           <el-form-item label="菠萝推荐" prop="status">
             <el-tooltip :content="'菠萝推荐和轮播不能同时进行'" placement="top">
               <el-switch
@@ -198,6 +198,10 @@ onMounted(() => {
   categoryId.value = Route.query.categoryId;
 });
 
+const successGoodsImgList = (res: any) => {
+  ruleForm.categoryImg = res.data;
+};
+
 const categoryLevelChange = (val: number) => {
   ruleForm.categoryLevel = val;
 };
@@ -245,9 +249,9 @@ watch(categoryId, (val) => {
         if (res.data.categoryImg != null) {
           ruleForm.categoryImg = res.data.categoryImg;
           fileList.value.push({
-          name: res.data.categoryName,
-          url: res.data.categoryImg,
-        });
+            name: res.data.categoryName,
+            url: res.data.categoryImg,
+          });
         }
 
         ruleForm.categoryName = res.data.categoryName;
@@ -257,9 +261,6 @@ watch(categoryId, (val) => {
 
         categoryLevel.value = res.data.categoryLevel;
         categoryParentId.value = res.data.parentId;
-
-
-
       } else {
         return ElMessage({
           showClose: true,
@@ -283,30 +284,6 @@ const handlePictureCardPreview = (file: UploadFile) => {
   dialogVisibleShowImg.value = true;
 };
 
-// 上传图片事件
-let uploadImg = (file: { file: Blob }) => {
-  upload(file.file).then((res) => {
-    if (res.status == 200) {
-      if (res.data.code === "image_repeated") {
-        ruleForm.categoryImg = res.data.images;
-      } else {
-        ruleForm.categoryImg = res.data.data.url;
-      }
-      return ElMessage({
-        showClose: true,
-        message: "上传成功",
-        type: "success",
-      });
-    } else {
-      ElMessage({
-        showClose: true,
-        message: "图床服务商出错原因是：" + res.data.message,
-        type: "error",
-      });
-    }
-  });
-};
-
 //弹出层图片数量超出
 const imageIndexnum = () => {
   return ElMessage({
@@ -317,7 +294,9 @@ const imageIndexnum = () => {
 };
 
 //弹出层移除图片事件
-const removeIndex = () => {};
+const removeIndex = () => {
+  ruleForm.categoryImg = "";
+};
 
 const fileList = ref<UploadUserFile[]>([
   {

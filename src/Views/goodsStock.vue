@@ -2,7 +2,8 @@
   <el-card class="box-card-main">
     <template #header>
       <div class="card-header-top">
-        <el-button type="primary" @click="goAddCategory" round>新增</el-button>
+        <!-- <el-button type="primary" @click="goAddCategory" round>新增</el-button> -->
+        <div></div>
         <div>
           <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>

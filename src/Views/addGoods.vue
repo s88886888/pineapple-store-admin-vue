@@ -13,44 +13,77 @@
     <div class="card-header-box">
       <!-- //添加商品 -->
       <el-card v-show="addGoodsShow" class="box-card-addGoods">
-        <el-form ref="ruleGoodsFormRef" :model="addGoodsForm" :rules="addGoodsRules" class="demo-ruleForm"
-          :size="formSize" status-icon>
+        <el-form
+          ref="ruleGoodsFormRef"
+          :model="addGoodsForm"
+          :rules="addGoodsRules"
+          class="demo-ruleForm"
+          :size="formSize"
+          status-icon
+        >
           <el-form-item label="商品名字" prop="productName">
             <el-input v-model="addGoodsForm.productName" style="width: 400px" />
           </el-form-item>
 
           <el-form-item label="商品分类" prop="categoryId">
-            <el-select v-model="addGoodsForm.categoryId" filterable placeholder="请选择商品分类" @change="categoryIdChange">
-              <el-option v-for="item in categoryOptions" :key="item.value" :label="item.label" :value="item.value" />
+            <el-select
+              v-model="addGoodsForm.categoryId"
+              filterable
+              placeholder="请选择商品分类"
+              @change="categoryIdChange"
+            >
+              <el-option
+                v-for="item in categoryOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="商品状态" prop="productStatus" style="margin-left: 10px">
+          <el-form-item
+            label="商品状态"
+            prop="productStatus"
+            style="margin-left: 10px"
+          >
             <el-tooltip :content="'是否上架'" placement="top">
               <div>
-                <el-switch v-model="addGoodsForm.productStatus" style="
-                            --el-switch-on-color: #13ce66;
-                            --el-switch-off-color: #ff4949;
-                          " :active-value="1" :inactive-value="0" />
+                <el-switch
+                  v-model="addGoodsForm.productStatus"
+                  style="
+                    --el-switch-on-color: #13ce66;
+                    --el-switch-off-color: #ff4949;
+                  "
+                  :active-value="1"
+                  :inactive-value="0"
+                />
               </div>
             </el-tooltip>
           </el-form-item>
 
-
-          <!-- 添加商品主图 -->
+          <!-- 添加商品主图  qwq-->
           <el-form-item label="商品图片" prop="url" required>
             <template #default="scope">
-
-              <el-upload action="/api/upload/" list-type="picture-card" :on-preview="handlePictureCardPreview"
-                :on-exceed="imageIndexnum" :on-remove="removeGoodsImg" :on-success="successGoodsImg"
-                accept="image/jpeg,image/gif,image/png" :limit="1">
-
+              <el-upload
+                action="/api/upload/"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-exceed="imageIndexnum"
+                :on-remove="removeGoodsImg"
+                :on-success="successGoodsImg"
+                accept="image/jpeg,image/gif,image/png"
+                :limit="1"
+              >
                 <el-icon>
                   <Plus />
                 </el-icon>
               </el-upload>
 
               <el-dialog v-model="dialogVisibleShowImg">
-                <img w-full style="width: 100%; height: 100%" :src="addGoodsUrl" />
+                <img
+                  w-full
+                  style="width: 100%; height: 100%"
+                  :src="addGoodsUrl"
+                />
               </el-dialog>
             </template>
           </el-form-item>
@@ -59,9 +92,22 @@
             <el-input v-model="addGoodsForm.content" type="textarea" />
           </el-form-item>
 
-          <el-form-item label="商品推荐" prop="productStar" style="margin-left: 10px">
-            <el-select v-model="addGoodsForm.productStar" filterable placeholder="请选择商品推荐分类">
-              <el-option v-for="item in productStatusoptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-form-item
+            label="商品推荐"
+            prop="productStar"
+            style="margin-left: 10px"
+          >
+            <el-select
+              v-model="addGoodsForm.productStar"
+              filterable
+              placeholder="请选择商品推荐分类"
+            >
+              <el-option
+                v-for="item in productStatusoptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
         </el-form>
@@ -70,18 +116,34 @@
 
       <!-- 添加商品图片-->
       <el-card class="box-card-addgoodsImgs" v-show="AddGoodsImgShow">
-        <el-form :model="AddGoodsImgForm" status-icon label-width="100px" class="demo-ruleForm">
+        <el-form
+          :model="AddGoodsImgForm"
+          status-icon
+          label-width="100px"
+          class="demo-ruleForm"
+        >
           <el-form-item label="照片" prop="url">
-
-            <el-upload v-model:file-list="addGoodImgsList" action="/api/upload/" multiple drag list-type="picture-card"
-              :on-preview="addGoodImgsListPreview" :on-success="successGoodsImgList" :on-remove="removeIndex">
+            <el-upload
+              v-model:file-list="addGoodImgsList"
+              action="/api/upload/"
+              multiple
+              drag
+              list-type="picture-card"
+              :on-preview="addGoodImgsListPreview"
+              :on-success="successGoodsImgList"
+              :on-remove="removeIndex"
+            >
               <el-icon>
                 <Plus />
               </el-icon>
             </el-upload>
 
             <el-dialog v-model="GoodImgsVisible">
-              <el-image style="width: 100%; height: 100%" :src="GoodImgsUrl" alt="Preview Image" />
+              <el-image
+                style="width: 100%; height: 100%"
+                :src="GoodImgsUrl"
+                alt="Preview Image"
+              />
             </el-dialog>
           </el-form-item>
         </el-form>
@@ -94,7 +156,12 @@
       <el-card class="box-card-GoodsSkuTable" v-show="GoodsSKuShow">
         <template #header>
           <div class="card-header">
-            <el-form :inline="true" :model="Skuform" ref="skuRuleFormRef" :rules="skuRules">
+            <el-form
+              :inline="true"
+              :model="Skuform"
+              ref="skuRuleFormRef"
+              :rules="skuRules"
+            >
               <el-form-item label="库存名称" prop="skuName">
                 <el-input v-model="Skuform.skuName" />
               </el-form-item>
@@ -115,20 +182,33 @@
               </el-form-item>
 
               <el-form-item label="状态">
-                <el-switch v-model="Skuform.status" class="ml-2" style="--el-switch-off-color: #ff4949" active-value="1"
-                  inactive-value="0" />
+                <el-switch
+                  v-model="Skuform.status"
+                  class="ml-2"
+                  style="--el-switch-off-color: #ff4949"
+                  active-value="1"
+                  inactive-value="0"
+                />
               </el-form-item>
 
               <el-form-item label="默认库存">
-                <el-switch v-model="Skuform.skuStar" class="ml-2" style="
-                            --el-switch-on-color: #13ce66;
-                            --el-switch-off-color: #ff4949;
-                          " active-value="1" inactive-value="0" />
+                <el-switch
+                  v-model="Skuform.skuStar"
+                  class="ml-2"
+                  style="
+                    --el-switch-on-color: #13ce66;
+                    --el-switch-off-color: #ff4949;
+                  "
+                  active-value="1"
+                  inactive-value="0"
+                />
               </el-form-item>
 
               <el-form-item label="操作：">
                 <el-button @click="reSkuData(skuRuleFormRef)">重置</el-button>
-                <el-button type="primary" @click="addSkufrom(skuRuleFormRef)">录入</el-button>
+                <el-button type="primary" @click="addSkufrom(skuRuleFormRef)"
+                  >录入</el-button
+                >
               </el-form-item>
             </el-form>
           </div>
@@ -142,28 +222,50 @@
 
           <el-table-column prop="status" label="状态" width="120">
             <template #default="scope">
-              <el-switch v-model="scope.row.status" class="ml-2" style="
-                          --el-switch-on-color: #13ce66;
-                          --el-switch-off-color: #ff4949;
-                        " active-value="1" inactive-value="0" />
+              <el-switch
+                v-model="scope.row.status"
+                class="ml-2"
+                style="
+                  --el-switch-on-color: #13ce66;
+                  --el-switch-off-color: #ff4949;
+                "
+                active-value="1"
+                inactive-value="0"
+              />
             </template>
           </el-table-column>
 
           <el-table-column prop="skuStar" label="默认库存">
             <template #default="scope">
-              <el-switch v-model="scope.row.skuStar" class="ml-2" style="
-                          --el-switch-on-color: #13ce66;
-                          --el-switch-off-color: #ff4949;
-                        " active-value="1" inactive-value="0" />
+              <el-switch
+                v-model="scope.row.skuStar"
+                class="ml-2"
+                style="
+                  --el-switch-on-color: #13ce66;
+                  --el-switch-off-color: #ff4949;
+                "
+                active-value="1"
+                inactive-value="0"
+              />
             </template>
           </el-table-column>
 
           <el-table-column fixed label="操作" width="120">
             <template #default="scope">
               <div>
-                <el-button type="danger" size="small" @click="delSku(scope.row.skuName)">删除</el-button>
-                <el-button v-if="editSkuShow" type="primary" size="small"
-                  @click="editSku(scope.row.skuName)">编辑</el-button>
+                <el-button
+                  type="danger"
+                  size="small"
+                  @click="delSku(scope.row.skuName)"
+                  >删除</el-button
+                >
+                <el-button
+                  v-if="editSkuShow"
+                  type="primary"
+                  size="small"
+                  @click="editSku(scope.row.skuName)"
+                  >编辑</el-button
+                >
               </div>
             </template>
           </el-table-column>
@@ -176,7 +278,12 @@
     <!-- 步骤按钮 -->
     <div class="card-header-footer">
       <el-button @click="backClick" v-show="backshow">上一步</el-button>
-      <el-button :loading="nextBtShow" type="primary" @click="submitForm(ruleGoodsFormRef)">{{ nextTxt }}</el-button>
+      <el-button
+        :loading="nextBtShow"
+        type="primary"
+        @click="submitForm(ruleGoodsFormRef)"
+        >{{ nextTxt }}</el-button
+      >
     </div>
     <!-- 步骤按钮 -->
   </el-card>
@@ -195,13 +302,9 @@ import { reactive, ref, onMounted, watch, computed } from "vue";
 import addGoods from "../api/addGoods";
 const formSize = ref("large");
 
-
-
-
 //生命周期事件，当挂载完毕
 onMounted(() => {
   getCategory();
-
 });
 
 //#region 添加商品
@@ -218,8 +321,6 @@ const dialogVisibleShowImg = ref(false);
 
 //上传事件的照片地址
 const addGoodsUrl = ref("");
-
-
 
 //查询所有商品分类
 function getCategory() {
@@ -252,8 +353,6 @@ const indexMethod = (index: number) => {
 
 const ruleGoodsFormRef = ref<FormInstance>();
 
-
-
 //商品分类
 const categoryOptions = reactive([
   {
@@ -267,7 +366,6 @@ const activeSteps = ref<number>(0);
 
 const nextBtShow = ref<boolean>(false);
 
-
 //点击查看变大的图片
 const handlePictureCardPreview = (file: UploadFile) => {
   addGoodsUrl.value = file.url!;
@@ -276,14 +374,16 @@ const handlePictureCardPreview = (file: UploadFile) => {
 
 //弹出层移除图片事件
 const removeIndex = (file: any) => {
-  const index = AddGoodsImgForm.findIndex((val) => val.url == file.response.data);
+  const index = AddGoodsImgForm.findIndex(
+    (val) => val.url == file.response.data
+  );
   AddGoodsImgForm.splice(index, 1);
-  console.log(AddGoodsImgForm);
+  // console.log(AddGoodsImgForm);
 };
 
 const removeGoodsImg = () => {
   addGoodsForm.url = "";
-}
+};
 
 //弹出层图片数量超出
 const imageIndexnum = () => {
@@ -609,7 +709,8 @@ const Skuform = reactive({
 });
 
 let sellPrice = computed(() => {
-  return (Skuform.sellPrice = Skuform.originalPrice * Skuform.discounts).toFixed(2);
+  return (Skuform.sellPrice =
+    Skuform.originalPrice * Skuform.discounts).toFixed(2);
 });
 
 let goodsSkuTable = reactive<any>([]);
@@ -672,11 +773,10 @@ const editSku = (val: string) => {
 //上传图片新版本
 const successGoodsImg = (res: any) => {
   addGoodsForm.url = res.data;
-}
+};
 const successGoodsImgList = (res: any) => {
-  AddGoodsImgForm.push({ url: res.data })
-}
-
+  AddGoodsImgForm.push({ url: res.data });
+};
 </script>
 
 <style scoped>
