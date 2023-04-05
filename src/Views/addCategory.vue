@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-17 18:45:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-05 18:04:09
+ * @LastEditTime: 2023-04-05 18:10:43
  * @FilePath: \pineapple-admin-vue\src\views\addCategory.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -93,7 +93,7 @@
                 :on-preview="handlePictureCardPreview"
                 :on-exceed="imageIndexnum"
                 :on-remove="removeIndex"
-                :on-success="successGoodsImgList"
+                :on-success="successUpalod"
                 accept="image/jpeg,image/gif,image/png"
                 :limit="1"
               >
@@ -198,7 +198,7 @@ onMounted(() => {
   categoryId.value = Route.query.categoryId;
 });
 
-const successGoodsImgList = (res: any) => {
+const successUpalod = (res: any) => {
   ruleForm.categoryImg = res.data;
 };
 

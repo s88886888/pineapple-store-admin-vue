@@ -129,7 +129,7 @@
               drag
               list-type="picture-card"
               :on-preview="addGoodImgsListPreview"
-              :on-success="successGoodsImgList"
+              :on-success="successUpload"
               :on-remove="removeIndex"
             >
               <el-icon>
@@ -865,9 +865,7 @@ const delSku = (val: string, Id: String) => {
     });
   }
 
-  const successGoodsImgList = (res: any) => {
-    AddGoodsImgForm.push({ url: res.data });
-  };
+
 
   // for(let i =0; i<goodsSkuTable.length;i++)
   // {
@@ -891,6 +889,12 @@ const editSku = (val: string) => {
     });
   }
 };
+
+
+  const successUpload = (res: any) => {
+    AddGoodsImgForm.push({ url: res.data });
+  };
+  
 </script>
 
 <style scoped>
