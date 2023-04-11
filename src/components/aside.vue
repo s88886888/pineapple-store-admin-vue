@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-03-05 16:14:22
- * @FilePath: \pineapple-admin-vue\src\components\aside.vue
+ * @LastEditTime: 2023-04-11 17:17:09
+ * @FilePath: \pineapple-store-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -91,8 +91,8 @@
       </el-menu-item-group>
 
       <el-menu-item-group>
-        <router-link to="/orderList"
-          ><el-menu-item index="2-3" disabled>
+        <router-link to="/returnOrder"
+          ><el-menu-item index="2-3">
             <el-icon><Tickets /></el-icon>退货管理</el-menu-item
           >
         </router-link>

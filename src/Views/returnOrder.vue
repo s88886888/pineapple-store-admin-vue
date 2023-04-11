@@ -4,33 +4,26 @@
       <div class="card-header-top">
         <div>
           <p style="font-size: 15px">
-            <el-icon><Search /></el-icon>搜索筛选
+            <el-icon>
+              <Search />
+            </el-icon>搜索筛选
           </p>
         </div>
         <div>
           <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
+          <el-button :icon="Promotion" type="primary"  round @click="returnOrder">审核退货</el-button>
+           <el-button :icon="Promotion" type="primary"  round @click="noReturnOrder">取消退货</el-button>
         </div>
       </div>
 
       <div class="card-header-box">
         <div>
-          <el-input
-            class="searchInput"
-            v-model="searchInputId"
-            wi
-            placeholder="订单编号"
-            style="width: 250px"
-          />
+          <el-input class="searchInput" v-model="searchInputId" wi placeholder="订单编号" style="width: 250px" />
 
-          <el-input
-            class="searchInput"
-            v-model="searchInputName"
-            wi
-            placeholder="用户名称"
-            style="width: 200px"
-          />
-          <el-select
+          <el-input class="searchInput" v-model="searchInputName" wi placeholder="用户名称" style="width: 200px" />
+
+          <!-- <el-select
             v-model="searchInputOrderStatus"
             filterable
             @change="searchInputOrderStatusChange"
@@ -43,15 +36,10 @@
               :label="item.label"
               :value="item.value"
             />
-          </el-select>
+          </el-select> -->
 
-          <el-date-picker
-            style="margin-left: 20px"
-            v-model="dataTimeOne"
-            type="date"
-            placeholder="购买时间"
-            @change="dataTimeOneChange"
-          />
+          <el-date-picker style="margin-left: 20px" v-model="dataTimeOne" type="date" placeholder="购买时间"
+            @change="dataTimeOneChange" />
         </div>
       </div>
 
@@ -66,28 +54,14 @@
       </div>
     </template>
 
-    <el-table
-      v-loading="loading"
-      :data="tableData"
-      :border="true"
-      style="width: 100%"
-    >
+    <el-table v-loading="loading" :data="tableData" :border="true" style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" />
       <el-table-column fixed type="index" :index="indexMethod" />
 
       <el-table-column prop="orderId" label="订单编号" width="300" />
 
-      <el-table-column
-        prop="createTime"
-        :formatter="createTimeFilter"
-        label="购买时间"
-        width="180"
-      />
-
-      <el-table-column prop="username" label="用户账号" width="120" />
-
-      <el-table-column prop="untitled" label="产品名称" width="200" />
-
-      <el-table-column prop="totalAmount" label="订单金额" width="150" />
+      <el-table-column prop="createTime" :formatter="createTimeFilter" label="购买时间" width="180" />
 
       <el-table-column prop="status" label="订单状态" width="100">
         <template #default="scope">
@@ -101,6 +75,14 @@
           </div>
         </template>
       </el-table-column>
+
+      <el-table-column prop="username" label="用户账号" width="120" />
+
+      <el-table-column prop="untitled" label="产品名称" width="200" />
+
+      <el-table-column prop="totalAmount" label="订单金额" width="150" />
+
+
 
       <el-table-column prop="payType" label="支付工具" width="100">
         <template #default="scope">
@@ -116,25 +98,15 @@
 
       <el-table-column fixed="right" label="操作" width="150">
         <template #default="scope">
-          <el-popconfirm
-            title="确定删除"
-            confirm-button-text="是"
-            cancel-button-text="否"
-            @confirm="deleteClick(scope.row.orderId)"
-            :icon="Delete"
-            icon-color="red"
-          >
+          <el-popconfirm title="确定删除" confirm-button-text="是" cancel-button-text="否"
+            @confirm="deleteClick(scope.row.orderId)" :icon="Delete" icon-color="red">
             <template #reference>
               <el-button type="danger" size="small">删除</el-button>
             </template>
           </el-popconfirm>
 
-          <el-button
-            type="primary"
-            size="small"
-            @click="goOrderItem(scope.row.orderId)"
-            >查看</el-button
-          >
+          <el-button type="primary" size="small" @click="goOrderItem(scope.row.orderId)">查看</el-button>
+            <el-button type="primary" size="small" @click="goOrderItem(scope.row.orderId)">退单利用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -144,13 +116,8 @@
         <div></div>
 
         <div>
-          <el-pagination
-            :page-size="size"
-            :total="total"
-            background
-            layout="prev, pager, next"
-            @current-change="currentChange"
-          />
+          <el-pagination :page-size="size" :total="total" background layout="prev, pager, next"
+            @current-change="currentChange" />
         </div>
       </div>
     </el-card>
@@ -159,11 +126,10 @@
 
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
-import { Delete, Search } from "@element-plus/icons-vue";
+import { Delete, Search, Promotion, User } from "@element-plus/icons-vue";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
 import orderList from "../api/orderList";
-
 import { useRouter } from "vue-router";
 
 //生命周期事件，当挂载完毕
@@ -175,8 +141,14 @@ onMounted(() => {
 //表单加载动画
 const loading = ref<boolean>(true);
 
+
+
+
+
 //表单数据
 let tableData = ref([]);
+
+
 
 //每次查询多少条
 const size = ref<number>(7);
@@ -189,7 +161,7 @@ let total = ref<number>(0);
 function getData() {
   loading.value = true;
   orderList
-    .getorderListPage({ current: current.value, size: size.value })
+    .getorderListPage({ current: current.value, size: size.value, status: "7" })
     .then((res) => {
       if (res.code == 200) {
         tableData.value = res.data.records;
@@ -240,7 +212,7 @@ const indexMethod = (index: number) => {
 //搜索框值
 const searchInputName = ref<string>("");
 const searchInputId = ref<String>("");
-const searchInputOrderStatus = ref<string>("");
+const searchInputOrderStatus = ref<string>("2");
 const searchInputStatus = ref<number>(0);
 
 const dataTimeOne = ref<string>("");
@@ -291,7 +263,7 @@ function indexSearch() {
     .getorderListPage({
       id: searchInputId.value,
       name: searchInputName.value,
-      status: searchInputStatus.value,
+      status: "2",
       dataTimeOne: dataTimeOne.value,
       dataTimeTwo: dataTimeTwo.value,
       current: current.value,
@@ -335,6 +307,11 @@ const router = useRouter();
 const goOrderItem = (val: string) => {
   router.push({ name: "orderItem", query: { orderId: val } }); //传递参数
 };
+
+const getReturndesc = (val: string) => {
+  router.push({ name: "orderItem", query: { orderId: val } }); //传递参数
+};
+
 //#endregion
 
 //#region 删除事件
@@ -360,6 +337,109 @@ const deleteClick = (id: string) => {
   });
 };
 //#endregion
+
+
+const multipleSelection = ref([]);
+
+//实在是偷懒 不想写类型 QAQ ---->any
+const handleSelectionChange = (val: any) => {
+  multipleSelection.value = val
+  console.log(multipleSelection.value);
+}
+
+const returnOrder = () => {
+
+  if (multipleSelection.value.length == 0) {
+    return ElMessage({
+      showClose: true,
+      message: '请先选择订单,再推送',
+      type: "error",
+    });
+  } else {
+
+    multipleSelection.value.forEach((item: any) => {
+
+      if (item.status != "3"||item.status != "2") {
+        return ElMessage({
+          showClose: true,
+          message: '数据异常订单编号：' + item.orderId + '不是待发货',
+          type: "error",
+        });
+      }
+    });
+
+    loading.value = false;
+    orderList.seedOrder(multipleSelection.value).then(res => {
+      if (res.code == 200) {
+        loading.value = true;
+        getData();
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "success",
+        });
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    })
+
+
+
+  }
+}
+
+
+const noReturnOrder = (orderId:string) => {
+
+  if (multipleSelection.value.length == 0) {
+    return ElMessage({
+      showClose: true,
+      message: '请先选择订单,再推送',
+      type: "error",
+    });
+  } else {
+
+    multipleSelection.value.forEach((item: any) => {
+
+      if (item.status != "2") {
+        return ElMessage({
+          showClose: true,
+          message: '数据异常订单编号：' + item.orderId + '不是待发货',
+          type: "error",
+        });
+      }
+    });
+    loading.value = false;
+    orderList.getReturnDesc(orderId).then(res => {
+      if (res.code == 200) {
+        loading.value = true;
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "success",
+        });
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    })
+
+
+
+  }
+}
+
+
+function item(value: never, index: number, array: never[]): void {
+  throw new Error("Function not implemented.");
+}
 </script>
 
 <style scoped>
@@ -367,6 +447,7 @@ const deleteClick = (id: string) => {
   display: flex;
   justify-content: space-between;
 }
+
 .searchInput {
   margin-right: 15px;
 }
@@ -375,18 +456,22 @@ const deleteClick = (id: string) => {
   display: flex;
   justify-content: space-between;
 }
+
 .box-card-main {
   padding-bottom: 50px;
 }
+
 .card-header-box {
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
+
 .box-footer {
   display: flex;
   justify-content: center;
 }
+
 .card-header-box-datatime {
   display: flex;
   margin-top: 20px;

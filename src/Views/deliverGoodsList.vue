@@ -53,7 +53,7 @@
       </div>
     </template>
 
-    <el-table v-loading="loading" :data="tableData" :border="true" :table-layout="auto" style="width: 100%"
+    <el-table v-loading="loading" :data="tableData" :border="true" style="width: 100%"
       @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
       <el-table-column fixed type="index" :index="indexMethod" />
@@ -128,7 +128,6 @@ import { Delete, Search, Promotion, User } from "@element-plus/icons-vue";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
 import orderList from "../api/orderList";
-import { auto } from "@popperjs/core";
 import { useRouter } from "vue-router";
 
 //生命周期事件，当挂载完毕
