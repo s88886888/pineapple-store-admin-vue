@@ -118,6 +118,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/deliverGoodsList.vue')
   },
   {
+    name: 'returnOrder',
+    path: '/returnOrder',
+    meta: {
+      title: '退货管理',
+    },
+    component: () => import('../views/returnOrder.vue')
+  },
+  {
     name: 'imgdemo',
     path: '/imgdemo',
     meta: {

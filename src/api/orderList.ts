@@ -55,8 +55,11 @@ const orderList = {
 * @param  Array
 * @return: null
 */
-  seedOrder(data:{}) { return axios.put('/orders/seedOrder',data)}
+  seedOrder(data:{}) { return axios.put('/orders/seedOrder',data)},
 
+
+  //查询退货理由
+  getReturnDesc(orderId:string) { return axios.get('/orders/getReturnDesc/'+orderId) }
 
 
 }

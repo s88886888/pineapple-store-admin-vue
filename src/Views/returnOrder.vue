@@ -12,7 +12,8 @@
         <div>
           <el-button round @click="reData">重置数据</el-button>
           <el-button :icon="Search" round @click="indexSearch">搜索</el-button>
-          <el-button :icon="Promotion" type="primary"  round @click="seedOrder">推送至仓库并且发货</el-button>
+          <el-button :icon="Promotion" type="primary"  round @click="returnOrder">审核退货</el-button>
+           <el-button :icon="Promotion" type="primary"  round @click="noReturnOrder">取消退货</el-button>
         </div>
       </div>
 
@@ -105,6 +106,7 @@
           </el-popconfirm>
 
           <el-button type="primary" size="small" @click="goOrderItem(scope.row.orderId)">查看</el-button>
+            <el-button type="primary" size="small" @click="goOrderItem(scope.row.orderId)">退单利用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -159,7 +161,7 @@ let total = ref<number>(0);
 function getData() {
   loading.value = true;
   orderList
-    .getorderListPage({ current: current.value, size: size.value, status: "2" })
+    .getorderListPage({ current: current.value, size: size.value, status: "7" })
     .then((res) => {
       if (res.code == 200) {
         tableData.value = res.data.records;
@@ -305,6 +307,11 @@ const router = useRouter();
 const goOrderItem = (val: string) => {
   router.push({ name: "orderItem", query: { orderId: val } }); //传递参数
 };
+
+const getReturndesc = (val: string) => {
+  router.push({ name: "orderItem", query: { orderId: val } }); //传递参数
+};
+
 //#endregion
 
 //#region 删除事件
@@ -340,7 +347,7 @@ const handleSelectionChange = (val: any) => {
   console.log(multipleSelection.value);
 }
 
-const seedOrder = () => {
+const returnOrder = () => {
 
   if (multipleSelection.value.length == 0) {
     return ElMessage({
@@ -352,7 +359,7 @@ const seedOrder = () => {
 
     multipleSelection.value.forEach((item: any) => {
 
-      if (item.status != "2") {
+      if (item.status != "3"||item.status != "2") {
         return ElMessage({
           showClose: true,
           message: '数据异常订单编号：' + item.orderId + '不是待发货',
@@ -360,6 +367,7 @@ const seedOrder = () => {
         });
       }
     });
+
     loading.value = false;
     orderList.seedOrder(multipleSelection.value).then(res => {
       if (res.code == 200) {
@@ -384,6 +392,49 @@ const seedOrder = () => {
   }
 }
 
+
+const noReturnOrder = (orderId:string) => {
+
+  if (multipleSelection.value.length == 0) {
+    return ElMessage({
+      showClose: true,
+      message: '请先选择订单,再推送',
+      type: "error",
+    });
+  } else {
+
+    multipleSelection.value.forEach((item: any) => {
+
+      if (item.status != "2") {
+        return ElMessage({
+          showClose: true,
+          message: '数据异常订单编号：' + item.orderId + '不是待发货',
+          type: "error",
+        });
+      }
+    });
+    loading.value = false;
+    orderList.getReturnDesc(orderId).then(res => {
+      if (res.code == 200) {
+        loading.value = true;
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "success",
+        });
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.msg,
+          type: "error",
+        });
+      }
+    })
+
+
+
+  }
+}
 
 
 function item(value: never, index: number, array: never[]): void {
