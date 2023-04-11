@@ -70,7 +70,6 @@
       v-loading="loading"
       :data="tableData"
       :border="true"
-      :table-layout="auto"
       style="width: 100%"
     >
       <el-table-column fixed type="index" :index="indexMethod" />
@@ -164,7 +163,7 @@ import { Delete, Search } from "@element-plus/icons-vue";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
 import orderList from "../api/orderList";
-import { auto } from "@popperjs/core";
+
 import { useRouter } from "vue-router";
 
 //生命周期事件，当挂载完毕
