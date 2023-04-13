@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-15 21:51:26
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-03-05 17:40:21
+ * @LastEditTime: 2023-04-13 21:55:07
  * @FilePath: \pineapple-admin-vue\src\views\orderItem.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -28,12 +28,12 @@
     <!-- 卡片头--步骤头 -->
     <template #header>
       <div class="card-header-top">
-        <el-steps :active="activeStrps" align-center finish-status="success">
+        <el-steps :active="activeStrps" align-center :finish-status="orederReturn">
           <el-step title="提交订单" :description="createTime" />
           <el-step title="支付订单" :description="payTime" />
-          <el-step title="平台发货" :description="deliveryTime"/>
-          <el-step title="确认收货" />
-          <el-step title="完成评价" />
+          <el-step title="平台发货" :description="deliveryTime" />
+
+          <el-step title="确认收货" :description="flishTime" />
         </el-steps>
       </div>
     </template>
@@ -136,7 +136,6 @@
             <el-table-column prop="receiverMobile" label="电话" width="200" />
             <el-table-column prop="orderRemark" label="备注" width="300" />
             <el-table-column prop="receiverAddress" label="地址" width="500" />
-
           </el-table>
         </div>
       </div>
@@ -202,7 +201,7 @@
 
   <!-- 修改备注 -->
   <el-dialog v-model="editVisible" title="修改备注" width="30%" center>
-    <el-form :model="form" >
+    <el-form :model="form">
       <el-form-item label="备注">
         <el-input v-model="form.orderRemark" type="textarea" />
       </el-form-item>
@@ -218,6 +217,7 @@
 </template>
 
 <script setup lang="ts">
+import { Delete, Search, Plus, Edit, Promotion } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
 import { CollectionTag } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -246,9 +246,14 @@ const money = ref<number>(0);
 const createTime = ref();
 const payTime = ref();
 const deliveryTime = ref();
+const flishTime = ref();
 let activeStrps = ref<number>(1);
 const orderId = ref();
 let orderStuts = ref();
+
+let orederReturn=ref();
+
+
 
 function getOrderitem() {
   orderItem.getOrderitem(orderId.value).then((res) => {
@@ -276,10 +281,22 @@ function getOrderitem() {
         case "6":
           orderStuts.value = "已关闭";
           break;
+        case "7":
+          orderStuts.value = "申请退货";
+          break;
         default:
           orderStuts.value = "错误";
       }
 
+      if (res.data[0].status == 6) {
+
+        orederReturn.value="error"
+
+      }
+      else
+      {
+         orederReturn.value="success"
+      }
       createTime.value = createTimeFilter({
         createTime: res.data[0].createTime,
       });
@@ -290,12 +307,21 @@ function getOrderitem() {
       }
 
       if (res.data[0].deliveryTime != null) {
-        deliveryTime.value = createTimeFilter({ createTime: res.data[0].deliveryTime });
+        deliveryTime.value = createTimeFilter({
+          createTime: res.data[0].deliveryTime,
+        });
+
         activeStrps.value = 3;
       }
 
+      if (res.data[0].flishTime != null) {
+        flishTime.value = createTimeFilter({
+          createTime: res.data[0].flishTime,
+        });
+        activeStrps.value = 4;
+      }
+
       productList.value = res.data[0].productList;
-      
     } else {
       ElMessage({
         showClose: true,

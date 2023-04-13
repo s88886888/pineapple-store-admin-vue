@@ -120,7 +120,6 @@
             confirm-button-text="是"
             cancel-button-text="否"
             @confirm="deleteClick(scope.row.orderId)"
-            :icon="Delete"
             icon-color="red"
           >
             <template #reference>
@@ -173,6 +172,7 @@
 </template>
 
 <script setup lang="ts">
+import { Delete, Search, Plus, Edit, Promotion } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
@@ -408,17 +408,17 @@ const noReturnOrder = (orderId: string) => {
         });
       }
     });
-    loading.value = false;
     orderList.noReturnOrder(multipleSelection.value).then((res) => {
       if (res.code == 200) {
         loading.value = true;
-        ElMessage({
+        getData();
+        return ElMessage({
           showClose: true,
           message: res.msg,
           type: "success",
         });
       } else {
-        ElMessage({
+        return ElMessage({
           showClose: true,
           message: res.msg,
           type: "error",

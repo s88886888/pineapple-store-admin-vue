@@ -157,8 +157,8 @@
 </template>
 
 <script setup lang="ts">
+import { Delete, Search, Plus, Edit,Promotion } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
-import { Delete, Search } from "@element-plus/icons-vue";
 import { ref, onMounted, reactive } from "vue";
 import createTimeFilter from "../utils/dateFormat";
 import orderList from "../api/orderList";
@@ -273,6 +273,10 @@ const OrederOptions = reactive([
   {
     value: 6,
     label: "已关闭",
+  },
+    {
+    value: 7,
+    label: "申请退货",
   },
 ]);
 
