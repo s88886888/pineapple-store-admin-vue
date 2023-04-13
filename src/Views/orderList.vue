@@ -91,14 +91,13 @@
 
       <el-table-column prop="status" label="订单状态" width="100">
         <template #default="scope">
-          <div>
             <p v-if="scope.row.status == 1">待付款</p>
             <p v-else-if="scope.row.status == 2">待发货</p>
             <p v-else-if="scope.row.status == 3">待收货</p>
             <p v-else-if="scope.row.status == 4">待评价</p>
             <p v-else-if="scope.row.status == 5">已完成</p>
-            <p v-else="scope.row.status == 6">已关闭</p>
-          </div>
+            <p v-else-if="scope.row.status == 6">已关闭</p>
+            <p v-else-if="scope.row.status == 7">申请退货</p>
         </template>
       </el-table-column>
 

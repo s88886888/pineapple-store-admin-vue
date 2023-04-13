@@ -59,7 +59,11 @@ const orderList = {
 
 
   //查询退货理由
-  getReturnDesc(orderId:string) { return axios.get('/orders/getReturnDesc/'+orderId) }
+  getReturnDesc(orderId:string) { return axios.get('/orders/getReturnDesc/'+orderId) },
+
+  returnOrder(data:{}) { return axios.put('/orders/returnOrder',data) },
+
+  noReturnOrder(data:{}) { return axios.put('/orders/noReturnOrder',data) }
 
 
 }
