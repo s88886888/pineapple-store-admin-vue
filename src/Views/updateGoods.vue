@@ -63,6 +63,7 @@
           <el-form-item label="商品图片" prop="url" required>
             <template #default="scope">
               <el-upload
+                v-model:file-list="fileList"
                 action="/api/upload/"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
@@ -308,14 +309,16 @@ const editProductId = ref();
 //生命周期事件，当挂载完毕
 onMounted(async () => {
   getCategory();
-  addGoodImgsList.value.splice(0);
-  fileList.value.splice(0);
+  // addGoodImgsList.value.splice(0);
+  // fileList.value.splice(0);
   editProductId.value = Route.query.productId;
 
   if (editProductId.value != null) {
     //查询商品
     await addGoods.GetGoodsById(editProductId.value).then((res) => {
       if (res.code == 200) {
+        // console.log(res.data[0].imgList[0].url, "QQ");
+
         addGoodsForm.productId = res.data[0].productId;
         addGoodsForm.productName = res.data[0].productName;
         addGoodsForm.categoryId = res.data[0].categoryId;
@@ -323,18 +326,20 @@ onMounted(async () => {
         addGoodsForm.productStar = res.data[0].productStar;
         addGoodsForm.content = res.data[0].content;
         addGoodsForm.url = res.data[0].imgList[0].url;
+        // addGoodImgsList.value.push(res.data[0].imgList[0].url)
+        // addGoodsUrl.value = res.data[0].imgList[0].url;
         //商品图片集合赋值
-        for (let i = 0; i < res.data[0].imgList.length; i++) {
-          if (res.data[0].imgList[i].isMain == 0) {
+        for (let i in res.data[0].imgList) {
+          if (res.data[0].imgList[i].isMain === 0) {
             addGoodImgsList.value.push({
-              name: res.data[0].imgList[i].id,
+              name: new Date() + "",
               url: res.data[0].imgList[i].url,
             });
           }
 
-          if (res.data[0].imgList[i].isMain == 1) {
+          if (res.data[0].imgList[i].isMain === 1) {
             fileList.value.push({
-              name: res.data[0].productName,
+              name: new Date() + "",
               url: res.data[0].imgList[i].url,
             });
           }
@@ -378,13 +383,6 @@ let addGoodsForm = reactive({
   url: "",
   productStar: 0,
 });
-
-const fileList = ref<UploadUserFile[]>([
-  {
-    name: "",
-    url: "",
-  },
-]);
 
 //点击上传的图片变大
 const dialogVisibleShowImg = ref(false);
@@ -435,7 +433,6 @@ const categoryOptions = reactive([
 const activeSteps = ref<number>(0);
 
 const nextBtShow = ref<boolean>(false);
-
 
 //点击查看变大的图片
 const handlePictureCardPreview = (file: UploadFile) => {
@@ -566,13 +563,8 @@ type GoodsImgsType = {
 };
 
 const AddGoodsImgForm = reactive<GoodsImgsType[]>([]);
-
-const addGoodImgsList = ref<UploadUserFile[]>([
-  {
-    name: "",
-    url: "",
-  },
-]);
+const fileList = ref<UploadUserFile[]>([]);
+const addGoodImgsList = ref<UploadUserFile[]>([]);
 
 const GoodImgsUrl = ref("");
 const GoodImgsVisible = ref(false);
@@ -649,7 +641,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         ///商品主表 qwq
         await addGoods.PutGoods(addGoodsForm).then(async (res) => {
           if (res.code == 200) {
-            
             productId.value = res.data.productId;
 
             await addGoods
@@ -865,8 +856,6 @@ const delSku = (val: string, Id: String) => {
     });
   }
 
-
-
   // for(let i =0; i<goodsSkuTable.length;i++)
   // {
   //   if(goodsSkuTable[i].skuName==val)
@@ -890,11 +879,9 @@ const editSku = (val: string) => {
   }
 };
 
-
-  const successUpload = (res: any) => {
-    AddGoodsImgForm.push({ url: res.data });
-  };
-  
+const successUpload = (res: any) => {
+  AddGoodsImgForm.push({ url: res.data });
+};
 </script>
 
 <style scoped>
