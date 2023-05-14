@@ -325,14 +325,17 @@ onMounted(async () => {
         addGoodsForm.productStatus = res.data[0].productStatus;
         addGoodsForm.productStar = res.data[0].productStar;
         addGoodsForm.content = res.data[0].content;
-        addGoodsForm.url = res.data[0].imgList[0].url;
-        // addGoodImgsList.value.push(res.data[0].imgList[0].url)
         // addGoodsUrl.value = res.data[0].imgList[0].url;
         //商品图片集合赋值
         for (let i in res.data[0].imgList) {
           if (res.data[0].imgList[i].isMain === 0) {
             addGoodImgsList.value.push({
-              name: new Date() + "",
+              name: res.data[0].imgList[i].id,
+              url: res.data[0].imgList[i].url,
+            });
+
+            AddGoodsImgForm.value.push({
+              name: res.data[0].imgList[i].id,
               url: res.data[0].imgList[i].url,
             });
           }
@@ -342,6 +345,7 @@ onMounted(async () => {
               name: new Date() + "",
               url: res.data[0].imgList[i].url,
             });
+            addGoodsForm.url = res.data[0].imgList[i].url;
           }
         }
       }
@@ -442,11 +446,11 @@ const handlePictureCardPreview = (file: UploadFile) => {
 
 //弹出层移除图片事件
 const removeIndex = (file: any) => {
-  const index = AddGoodsImgForm.findIndex(
-    (val) => val.url == file.response.data
-  );
-  AddGoodsImgForm.splice(index, 1);
-  // console.log(AddGoodsImgForm);
+  console.log(file);
+
+  const index = AddGoodsImgForm.value.findIndex((val) => val.id == file.name);
+  AddGoodsImgForm.value.splice(index, 1);
+  // console.log(addGoodImgsList.value);
 };
 
 //弹出层图片数量超出
@@ -552,17 +556,19 @@ const removeGoodsImg = () => {
 //上传图片新版本
 const successGoodsImg = (res: any) => {
   addGoodsForm.url = res.data;
+
+  console.log(addGoodsForm.url, "商品主图");
 };
 
 type GoodsImgsType = {
   id?: string;
-  itemId?: string;
+  name?: string;
   del?: number;
   uid?: number;
   url: string;
 };
 
-const AddGoodsImgForm = reactive<GoodsImgsType[]>([]);
+const AddGoodsImgForm = ref<GoodsImgsType[]>([]);
 const fileList = ref<UploadUserFile[]>([]);
 const addGoodImgsList = ref<UploadUserFile[]>([]);
 
@@ -693,10 +699,15 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         ///添加商品图片列表
 
         await addGoods
-          .PostGoodImgs({ itemId: productId.value, imgList: AddGoodsImgForm })
+          .PostGoodImgs({
+            itemId: productId.value,
+            imgList: AddGoodsImgForm.value,
+          })
           .then((res) => {
             if (res.code == 200) {
-              AddGoodsImgForm.splice(0);
+              // AddGoodsImgForm.splice(0);
+              // console.log(AddGoodsImgForm.values,"QQAQQ");
+
               ElMessage({
                 showClose: true,
                 message: res.msg,
@@ -705,7 +716,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             } else {
               ElMessage({
                 showClose: true,
-                message: "商品库存不可以为空",
+                message: "error",
                 type: "error",
               });
             }
@@ -714,10 +725,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         return;
       }
       if (activeSteps.value == 1) {
-        AddGoodsImgForm.splice(
-          AddGoodsImgForm.findIndex((val) => val.uid == 0),
-          1
-        );
+        // AddGoodsImgForm.splice(
+        //   AddGoodsImgForm.findIndex((val) => val.uid == 0),
+        //   1
+        // );
       }
       activeSteps.value++;
     } else {
@@ -880,7 +891,8 @@ const editSku = (val: string) => {
 };
 
 const successUpload = (res: any) => {
-  AddGoodsImgForm.push({ url: res.data });
+  AddGoodsImgForm.value.push({ url: res.data });
+  console.log(AddGoodsImgForm.value, "商品明细图");
 };
 </script>
 
