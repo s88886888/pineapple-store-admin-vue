@@ -35,7 +35,8 @@ export default createStore({
             meta: { keepAlive: false, title: '首页' },
             query: ''
         }],
-        num: 0
+        num: 0,
+        routerName: "",
 
         //用户访问过的页面，默认第一个标签为首页
     },
@@ -53,8 +54,19 @@ export default createStore({
                     break
                 }
             }
+        },
+        setRouterName(state, value) {
+            state.routerName = value;
         }
     },
     actions: {},
-    modules: {}
+    modules: {},
+    getters: {
+        getRouteInfo(state) {
+            return state.visitedView
+        },
+        getRouterName(state) {
+            return state.routerName
+        }
+    }
 })

@@ -16,19 +16,15 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-11 17:17:09
- * @FilePath: \pineapple-store-admin-vue\src\components\aside.vue
+ * @LastEditTime: 2023-05-14 20:18:46
+ * @FilePath: \pineapple-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
 
 <template>
-  <el-menu
-    default-active="2"
-    class="el-menu-vertical"
-    :collapse="isCollapse"
-  >
+  <el-menu default-active="2" class="el-menu-vertical" :collapse="isCollapse">
     <el-sub-menu index="1">
       <template #title>
         <el-icon><Goods /></el-icon>
@@ -82,9 +78,9 @@
         </router-link>
       </el-menu-item-group>
 
-      <el-menu-item-group >
+      <el-menu-item-group>
         <router-link to="/deliverGoodsList"
-          ><el-menu-item index="2-2" >
+          ><el-menu-item index="2-2">
             <el-icon><Tickets /></el-icon>发货管理</el-menu-item
           >
         </router-link>
@@ -134,9 +130,12 @@
       </el-menu-item-group>
     </el-sub-menu>
 
-    <el-menu-item index="4" disabled>
-      <el-icon><document /></el-icon>
-      <template #title>用户管理</template>
+    <el-menu-item index="4">
+      <template #title>
+        <router-link to="/user">
+          <el-icon><document /></el-icon>用户管理</router-link
+        ></template
+      >
     </el-menu-item>
 
     <el-sub-menu index="5">
@@ -178,8 +177,6 @@ const isCollapse = ref<boolean>(false);
 const AsideUIShow = () => {
   isCollapse.value = !isCollapse.value;
 };
-
-
 </script>
 
 <style scoped>
@@ -192,5 +189,11 @@ const AsideUIShow = () => {
 
 .el-menu-vertical a {
   text-decoration: none;
+}
+
+
+a {
+  text-decoration: none;
+  color: rgb(66, 66, 66);
 }
 </style>

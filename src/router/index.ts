@@ -126,6 +126,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/returnOrder.vue')
   },
   {
+    name: 'user',
+    path: '/user',
+    meta: {
+      title: '用户管理',
+    },
+    component: () => import('../views/user.vue')
+  },
+  {
     name: 'imgdemo',
     path: '/imgdemo',
     meta: {

@@ -19,6 +19,7 @@
             closable
             @tab-remove="removeTab"
             @tab-click="addRouter"
+            @edit="handleTabsEdit"
           >
             <el-tab-pane
               v-for="item in visitedView"
@@ -33,26 +34,50 @@
 
     <div class="container-main">
       <!-- <KeepAlive> -->
-     
-          <RouterView />
-      
+
+      <RouterView />
+
       <!-- </KeepAlive> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from "element-plus";
 import { ref, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore, mapState } from "vuex";
+
 import store from "../store/index";
 
 const router = useRouter();
 const route = useRoute();
-const editableTabsValue = ref("");
+const editableTabsValue = ref("/");
+
+// const linsonStore = useStore();
+
+const handleTabsEdit = () => {
+  console.log(store.getters.getRouteInfo);
+};
 
 const removeTab = (targetName: string) => {
+  console.log(targetName);
+
+  if (targetName === "/") {
+    return ElMessage({
+      showClose: true,
+      message: "首页标签不能被删除",
+      type: "error",
+    });
+  }
+
   store.commit("delVisitedView", { path: targetName });
+  router.push({
+    path: store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1]
+      .path,
+  });
+  editableTabsValue.value =
+    store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1].path;
 };
 
 const addRouter = (val: { props: { name: string } }) => {
@@ -77,6 +102,7 @@ watch(
       query: route.query,
     };
     store.commit("addVisitedView", viewObj); //将此路由储存在vuex
+    editableTabsValue.value = viewObj.path;
   },
   { deep: true }
 );

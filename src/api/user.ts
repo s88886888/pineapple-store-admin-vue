@@ -1,4 +1,4 @@
-<!--
+/*
  *  ┌─────────────────────────────────────────────────────────────┐
  *  │┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐│
  *  ││Esc│!1 │@2 │#3 │$4 │%5 │^6 │&7 │*8 │(9 │)0 │_- │+= │|\ │`~ ││
@@ -14,55 +14,37 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2023-01-09 06:44:13
+ * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-14 19:34:20
- * @FilePath: \pineapple-admin-vue\src\components\header.vue
+ * @LastEditTime: 2023-05-15 01:29:32
+ * @FilePath: \pineapple-admin-vue\src\api\user.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
- -->
+ */
 
-<template>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      :ellipsis="false"
-      @select="handleSelect"
-    >
-      <el-menu-item index="0" class="logo-txt">菠萝电商后台</el-menu-item>
 
-      <div class="flex-grow" />
-      <!-- <el-menu-item index="1">你好：Test1！</el-menu-item>
-      <el-sub-menu index="2">
-        <template #title>菜单</template>
-        <el-menu-item index="2-1">退出</el-menu-item>
-        <el-menu-item index="2-2">关于</el-menu-item>
-        <el-menu-item index="2-3">帮助</el-menu-item>
-      </el-sub-menu> -->
-    </el-menu>
-</template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-// 头部部分
-const activeIndex = ref<string>("3");
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-// 头部部分End
-</script>
+import axios from '../utils/http'
 
-<style scoped>
-/* 顶部 */
-.flex-grow {
-  flex-grow: 1;
-}
-.el-menu-demo .logo-txt {
-  font-size: 25px;
+
+
+
+const user = {
+
+
+    getUserList(param: {}) { return axios.get('/users/getUserPage', param) },
+
+    updateUserStatus(userId: number) { return axios.put('/users/updateUserStatus/' + userId) }
+
+
 }
 
 
-/* 顶部End */
-</style>
+
+export default user
+
+
+
+
+
