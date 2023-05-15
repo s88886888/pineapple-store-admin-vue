@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:13
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-14 19:34:20
+ * @LastEditTime: 2023-05-15 20:31:54
  * @FilePath: \pineapple-admin-vue\src\components\header.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -34,13 +34,14 @@
       <el-menu-item index="0" class="logo-txt">菠萝电商后台</el-menu-item>
 
       <div class="flex-grow" />
-      <!-- <el-menu-item index="1">你好：Test1！</el-menu-item>
-      <el-sub-menu index="2">
-        <template #title>菜单</template>
-        <el-menu-item index="2-1">退出</el-menu-item>
-        <el-menu-item index="2-2">关于</el-menu-item>
-        <el-menu-item index="2-3">帮助</el-menu-item>
+
+      <!-- <el-menu-item index="1">你好：Admin</el-menu-item> -->
+      <!-- <el-sub-menu index="2">
+        <template #title>退出</template>
+         <el-menu-item index="2-1">退出</el-menu-item>
+
       </el-sub-menu> -->
+      <div style="margin-top:15px"><el-button >退出</el-button></div>
     </el-menu>
 </template>
 

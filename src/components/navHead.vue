@@ -70,18 +70,23 @@ const removeTab = (targetName: string) => {
       type: "error",
     });
   }
-
-  store.commit("delVisitedView", { path: targetName });
-  router.push({
-    path: store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1]
-      .path,
-  });
-  editableTabsValue.value =
-    store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1].path;
+  if (targetName != "/login") {
+    store.commit("delVisitedView", { path: targetName });
+    router.push({
+      path: store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1]
+        .path,
+    });
+    editableTabsValue.value =
+      store.getters.getRouteInfo[store.getters.getRouteInfo.length - 1].path;
+  }
 };
 
 const addRouter = (val: { props: { name: string } }) => {
-  router.push({ path: val.props.name });
+  console.log(val.props.name, "QAQAQ");
+
+  if (val.props.name != "/login") {
+    router.push({ path: val.props.name });
+  }
 };
 
 let visitedView = computed(() => {
@@ -94,15 +99,17 @@ watch(
     if (route.meta.title == null) {
       return;
     }
-    let viewObj = {
-      name: route.name,
-      fullPath: route.fullPath,
-      path: route.path,
-      meta: route.meta,
-      query: route.query,
-    };
-    store.commit("addVisitedView", viewObj); //将此路由储存在vuex
-    editableTabsValue.value = viewObj.path;
+    if (route.path != "/login") {
+      let viewObj = {
+        name: route.name,
+        fullPath: route.fullPath,
+        path: route.path,
+        meta: route.meta,
+        query: route.query,
+      };
+      store.commit("addVisitedView", viewObj); //将此路由储存在vuex
+      editableTabsValue.value = viewObj.path;
+    }
   },
   { deep: true }
 );

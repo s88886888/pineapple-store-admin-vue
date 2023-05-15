@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 21:05:32
+ * @LastEditTime: 2023-05-16 02:04:18
  * @FilePath: \pineapple-admin-vue\src\views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -98,10 +98,10 @@
       </div>
     </div>
   </div>
-  <el-dialog v-model="visible" :show-close="false">
+  <el-dialog v-model="visible"      :close-on-click-modal="false" :show-close="false">
     <template #header="{ close, titleId, titleClass }">
       <div class="my-header">
-        <el-button type="danger" @click="close">
+        <el-button type="danger" @click="login">
           <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
           关闭
         </el-button>
@@ -153,31 +153,70 @@
       </div>
     </div>
   </el-dialog>
+
+  <el-dialog
+    v-model="loginVisible"
+    :align-center="true"
+    :show-close="false"
+    :close-on-click-modal="false"
+    :fullscreen="true"
+    draggable
+    width="600"
+  >
+    <div>
+      <el-card class="box-card">
+        <template #header="{ close, titleId, titleClass }">
+          <div class="my-header">欢迎登录菠萝电商后台管理系统</div>
+        </template>
+        <el-form :model="form" label-width="80px">
+          <el-form-item label="账号">
+            <el-input v-model="form.name" />
+          </el-form-item>
+
+          <el-form-item label="密码">
+            <el-input v-model="form.passWord" />
+          </el-form-item>
+        </el-form>
+
+        <div class="login">
+          <el-button>登录</el-button>
+          <el-button>取消</el-button>
+        </div>
+      </el-card>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import { ElButton, ElDialog } from "element-plus";
 import { CircleCloseFilled } from "@element-plus/icons-vue";
 
 import * as echarts from "echarts";
+import { fa } from "element-plus/es/locale";
 
 //进入弹出项目说明
 const visible = ref(true);
 
+const loginVisible = ref(false);
+
+const token = ref<String | null>("");
+
+const form = reactive({
+  name: "admin",
+  passWord: "123456",
+});
+
 let myChart: any;
 
 onMounted(() => {
-
-
   init();
   init1();
   init2();
 });
 
 function init() {
-
-  echarts.dispose(document.getElementById("order")as HTMLElement);
+  echarts.dispose(document.getElementById("order") as HTMLElement);
   myChart = echarts.init(document.getElementById("order") as HTMLElement);
 
   var option = {
@@ -200,7 +239,7 @@ function init() {
 }
 
 function init1() {
-  echarts.dispose(document.getElementById("user")as HTMLElement);
+  echarts.dispose(document.getElementById("user") as HTMLElement);
   myChart = echarts.init(document.getElementById("user") as HTMLElement);
   var option2 = {
     tooltip: {
@@ -243,7 +282,7 @@ function init1() {
 }
 
 function init2() {
-  echarts.dispose(document.getElementById("user-box")as HTMLElement);
+  echarts.dispose(document.getElementById("user-box") as HTMLElement);
   myChart = echarts.init(document.getElementById("user-box") as HTMLElement);
   var option1 = {
     title: {
@@ -283,9 +322,28 @@ function init2() {
 
   myChart.setOption(option1);
 }
+
+const login = () => {
+  token.value = window.localStorage.getItem("token");
+
+  if (token.value) {
+    visible.value = false;
+  } else {
+    visible.value = false;
+    loginVisible.value = true;
+  }
+};
 </script>
 
 <style scoped>
+.box-card
+{
+  width: 500px;
+}
+.login {
+  /* margin: auto; */
+  margin-left: 120px;
+}
 .main {
   display: flex;
   justify-content: center;
@@ -299,5 +357,10 @@ function init2() {
 .linson-xm li {
   list-style-type: none;
   margin: 0 auto;
+}
+
+.box-card {
+  width: 400px;
+  margin: auto;
 }
 </style>
