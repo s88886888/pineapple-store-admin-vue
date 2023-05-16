@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 11:03:39
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-03-05 17:31:44
- * @FilePath: \pineapple-admin-vue\src\utils\request.ts
+ * @LastEditTime: 2023-05-16 17:45:05
+ * @FilePath: \pineapple-store-admin-vue\src\utils\request.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -26,11 +26,15 @@
 
 
 import axios from 'axios'
+let token = localStorage.getItem("token");
 
 
 const request = axios.create({
   baseURL: '/api',
-  timeout: 60000
+  timeout: 60000,
+  headers: {
+    'token': token
+  },
 })
 
 
@@ -40,19 +44,13 @@ const request = axios.create({
 request.interceptors.request.use(config => {
   // 统一设置用户身份 token
 
+  let token = localStorage.getItem("token");
 
-
-  if (localStorage.token) {
-
-    typeof config.headers?.set === 'function' &&
-      config.headers.set('Authorization', "window.sessionStorage.getItem('token')")
-
-  }
-  return config
+  return config;
 }, error => {
   // Do something with request error
   return Promise.reject(error)
-  
+
 })
 
 // 相应拦截器

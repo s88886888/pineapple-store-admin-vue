@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:44:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-15 21:03:16
- * @FilePath: \pineapple-admin-vue\src\router\index.ts
+ * @LastEditTime: 2023-05-16 16:15:02
+ * @FilePath: \pineapple-store-admin-vue\src\router\index.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -147,6 +147,22 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
+
+
+// 全局守卫：登录拦截 本地没有存token,请重新登录
+router.beforeEach((to, from, next) => {
+  // 判断有没有登录
+  if (!localStorage.getItem('token')) {
+    if (to.name === "home") {
+      next();
+    } else {
+      router.push('/')
+    }
+  } else {
+    next();
+  }
+});
 
 
 

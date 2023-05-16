@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-16 02:04:18
- * @FilePath: \pineapple-admin-vue\src\views\home.vue
+ * @LastEditTime: 2023-05-16 16:16:23
+ * @FilePath: \pineapple-store-admin-vue\src\Views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -98,10 +98,14 @@
       </div>
     </div>
   </div>
-  <el-dialog v-model="visible"      :close-on-click-modal="false" :show-close="false">
+  <el-dialog
+    v-model="visible"
+    :close-on-click-modal="false"
+    :show-close="false"
+  >
     <template #header="{ close, titleId, titleClass }">
       <div class="my-header">
-        <el-button type="danger" @click="login">
+        <el-button type="danger" @click="loginCheck">
           <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
           关闭
         </el-button>
@@ -168,19 +172,24 @@
         <template #header="{ close, titleId, titleClass }">
           <div class="my-header">欢迎登录菠萝电商后台管理系统</div>
         </template>
-        <el-form :model="form" label-width="80px">
-          <el-form-item label="账号">
-            <el-input v-model="form.name" />
+        <el-form
+          ref="ruleFormRef"
+          :rules="rules"
+          :model="ruleForm"
+          label-width="80px"
+        >
+          <el-form-item label="账号" prop="name">
+            <el-input v-model="ruleForm.name" />
           </el-form-item>
 
-          <el-form-item label="密码">
-            <el-input v-model="form.passWord" />
+          <el-form-item label="密码" prop="passWrod">
+            <el-input v-model="ruleForm.passWrod" />
           </el-form-item>
         </el-form>
 
         <div class="login">
-          <el-button>登录</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="adminClick(ruleFormRef)">登录</el-button>
+          <!-- <el-button>取消</el-button> -->
         </div>
       </el-card>
     </div>
@@ -189,11 +198,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
-import { ElButton, ElDialog } from "element-plus";
+import { ElButton, ElDialog, FormRules, FormInstance,ElMessage } from "element-plus";
 import { CircleCloseFilled } from "@element-plus/icons-vue";
 
 import * as echarts from "echarts";
 import { fa } from "element-plus/es/locale";
+import user from "../api/user";
 
 //进入弹出项目说明
 const visible = ref(true);
@@ -202,9 +212,11 @@ const loginVisible = ref(false);
 
 const token = ref<String | null>("");
 
-const form = reactive({
+const ruleFormRef = ref<FormInstance>();
+
+const ruleForm = reactive({
   name: "admin",
-  passWord: "123456",
+  passWrod: "123456",
 });
 
 let myChart: any;
@@ -323,26 +335,60 @@ function init2() {
   myChart.setOption(option1);
 }
 
-const login = () => {
+const rules = reactive<FormRules>({
+  name: [
+    { required: true, message: "请输入账户", trigger: "blur" },
+    { min: 5, max: 10, message: "长度在5，10", trigger: "blur" },
+  ],
+  passWrod: [
+    { required: true, message: "请输入密码", trigger: "blur" },
+    { min: 5, max: 10, message: "长度在5，10", trigger: "blur" },
+  ],
+});
+
+const loginCheck = () => {
   token.value = window.localStorage.getItem("token");
 
   if (token.value) {
     visible.value = false;
+     loginVisible.value = false;
   } else {
     visible.value = false;
     loginVisible.value = true;
   }
 };
+
+const adminClick = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      user.adminLogin(ruleForm).then((res) => {
+        if (res.code == 200) {
+          window.localStorage.setItem("token", res.data);
+          token.value = res.data;
+          loginVisible.value = false;
+        } else {
+          return ElMessage({
+            showClose: true,
+            message: res.msg,
+             type: "error",
+          });
+        }
+      });
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
 </script>
 
 <style scoped>
-.box-card
-{
+.box-card {
   width: 500px;
 }
 .login {
   /* margin: auto; */
-  margin-left: 120px;
+  margin-left: 150px;
 }
 .main {
   display: flex;

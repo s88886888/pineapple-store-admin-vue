@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-11 12:59:21
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-15 01:29:32
- * @FilePath: \pineapple-admin-vue\src\api\user.ts
+ * @LastEditTime: 2023-05-16 14:09:39
+ * @FilePath: \pineapple-store-admin-vue\src\api\user.ts
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -35,8 +35,10 @@ const user = {
 
     getUserList(param: {}) { return axios.get('/users/getUserPage', param) },
 
-    updateUserStatus(userId: number) { return axios.put('/users/updateUserStatus/' + userId) }
+    updateUserStatus(userId: number) { return axios.put('/users/updateUserStatus/' + userId) },
 
+
+    adminLogin(param: {}) { return axios.post('/users/adminLogin/', param) }
 
 }
 
