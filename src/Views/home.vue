@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-19 02:32:46
+ * @LastEditTime: 2023-05-19 02:45:36
  * @FilePath: \pineapple-store-admin-vue\src\Views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -81,7 +81,7 @@
 
     <div class="main">
       <div>
-        <h1>本周订单</h1>
+        <h1>上周订单</h1>
         <div id="order" style="width: 500px; height: 480px"></div>
       </div>
 
