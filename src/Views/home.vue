@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-19 02:45:36
+ * @LastEditTime: 2023-05-19 02:50:51
  * @FilePath: \pineapple-store-admin-vue\src\Views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -70,11 +70,9 @@
         </template>
 
         <div>
-          PineappleStore项目是一套电商系统，包括前台商城系统及后台管理系统，
-          基于SpringBoot+MyBatis实现，
-          前台商城系统包含首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、会员中心、
-          客户服务、帮助中心等模块。后台管理系统包含商品管理、订单管理、会员管理、促销管理、
-          运营管理、内容管理、统计报表、财务管理、权限管理、设置等模块。
+          PineappleStore项目是一套电商平台系统，包括前台商城系统及后台管理系统，
+          基于SpringBoot+vue实现，前台商城系统包含轮播图，首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、收藏夹，购物车等模块。
+          后台管理系统包含商品管理、商品图片管理，库存管理，订单管理、用户管理、促销管理、内容管理、轮播图设置等模块。
         </div>
       </el-card>
     </div>
@@ -114,12 +112,10 @@
     <div class="linson">
       <h1>项目介绍</h1>
       <div class="linson-xm">
-        <span
-          >PineappleStore项目是一套电商系统，包括前台商城系统及后台管理系统，
-          基于SpringBoot+MyBatis实现，
-          前台商城系统包含首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、会员中心、
-          客户服务、帮助中心等模块。后台管理系统包含商品管理、订单管理、会员管理、促销管理、
-          运营管理、内容管理、统计报表、财务管理、权限管理、设置等模块。</span
+        <span>
+          PineappleStore项目是一套电商平台系统，包括前台商城系统及后台管理系统，
+          基于SpringBoot+vue实现，前台商城系统包含轮播图，首页门户、商品推荐、商品搜索、商品展示、购物车、订单流程、收藏夹，购物车等模块。
+          后台管理系统包含商品管理、商品图片管理，库存管理，订单管理、用户管理、促销管理、内容管理、轮播图设置等模块。</span
         >
       </div>
 
@@ -127,16 +123,15 @@
       <div class="linson-xm">
         <ul>
           <li>SpringBoot2</li>
-          <li>mybatis-plus</li>
-          <li>vue3 + Ts</li>
-          <li>elementPlus</li>
-          <li>vueX</li>
+          <li>mybatis-plus + mybatis-plus-json</li>
+          <li>vue3 + Ts + elementPlus + vueX</li>
+          <li>Vue2 + element-ui + vueX</li>
           <li>webSocket</li>
+          <li>Redis</li>
           <li>quartZ</li>
           <li>alipay（支付宝）</li>
           <li>滑动机器人验证</li>
           <li>短信验证码</li>
-          <li>mybatis-plus-json</li>
         </ul>
       </div>
 
@@ -229,7 +224,6 @@ const ruleForm = reactive({
 let myChart: any;
 
 onMounted(() => {
-
   selectDataShow.selectWeekOrder().then((res) => {
     let data: any[] = [];
     for (let i in res.data) {
