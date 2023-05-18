@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-16 16:16:23
+ * @LastEditTime: 2023-05-19 02:32:46
  * @FilePath: \pineapple-store-admin-vue\src\Views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -91,12 +91,12 @@
       </div>
     </div>
 
-    <div class="main">
+    <!-- <div class="main">
       <div>
         <h1>用户浏览</h1>
         <div id="user-box" style="width: 500px; height: 480px"></div>
       </div>
-    </div>
+    </div> -->
   </div>
   <el-dialog
     v-model="visible"
@@ -198,12 +198,19 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
-import { ElButton, ElDialog, FormRules, FormInstance,ElMessage } from "element-plus";
+import {
+  ElButton,
+  ElDialog,
+  FormRules,
+  FormInstance,
+  ElMessage,
+} from "element-plus";
 import { CircleCloseFilled } from "@element-plus/icons-vue";
 
 import * as echarts from "echarts";
-import { fa } from "element-plus/es/locale";
+import { ECharts, EChartsOption, init } from "echarts";
 import user from "../api/user";
+import selectDataShow from "../api/selectData";
 
 //进入弹出项目说明
 const visible = ref(true);
@@ -222,16 +229,23 @@ const ruleForm = reactive({
 let myChart: any;
 
 onMounted(() => {
-  init();
+
+  selectDataShow.selectWeekOrder().then((res) => {
+    let data: any[] = [];
+    for (let i in res.data) {
+      data.push(res.data[i].num);
+    }
+    laskWeekOrder(data);
+  });
+
   init1();
-  init2();
+  // init2();
 });
 
-function init() {
-  echarts.dispose(document.getElementById("order") as HTMLElement);
-  myChart = echarts.init(document.getElementById("order") as HTMLElement);
-
-  var option = {
+function laskWeekOrder(data: any) {
+  const charEle = document.getElementById("order") as HTMLElement;
+  const charEch: ECharts = init(charEle);
+  const option: EChartsOption = {
     xAxis: {
       type: "category",
       data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
@@ -241,13 +255,12 @@ function init() {
     },
     series: [
       {
-        data: [150, 230, 224, 218, 135, 147, 300, 400],
+        data: data,
         type: "line",
       },
     ],
   };
-
-  myChart.setOption(option);
+  charEch.setOption(option);
 }
 
 function init1() {
@@ -293,47 +306,47 @@ function init1() {
   myChart.setOption(option2);
 }
 
-function init2() {
-  echarts.dispose(document.getElementById("user-box") as HTMLElement);
-  myChart = echarts.init(document.getElementById("user-box") as HTMLElement);
-  var option1 = {
-    title: {
-      text: "用户行为分析",
-      subtext: "商品数据",
-      left: "center",
-    },
-    tooltip: {
-      trigger: "item",
-    },
-    legend: {
-      orient: "vertical",
-      left: "left",
-    },
-    series: [
-      {
-        name: "Access From",
-        type: "pie",
-        radius: "50%",
-        data: [
-          { value: 1048, name: "数码" },
-          { value: 735, name: "零食" },
-          { value: 580, name: "蛋糕" },
-          { value: 484, name: "手机" },
-          { value: 300, name: "苹果" },
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
-          },
-        },
-      },
-    ],
-  };
+// function init2() {
+//   echarts.dispose(document.getElementById("user-box") as HTMLElement);
+//   myChart = echarts.init(document.getElementById("user-box") as HTMLElement);
+//   var option1 = {
+//     title: {
+//       text: "用户行为分析",
+//       subtext: "商品数据",
+//       left: "center",
+//     },
+//     tooltip: {
+//       trigger: "item",
+//     },
+//     legend: {
+//       orient: "vertical",
+//       left: "left",
+//     },
+//     series: [
+//       {
+//         name: "Access From",
+//         type: "pie",
+//         radius: "50%",
+//         data: [
+//           { value: 1048, name: "数码" },
+//           { value: 735, name: "零食" },
+//           { value: 580, name: "蛋糕" },
+//           { value: 484, name: "手机" },
+//           { value: 300, name: "苹果" },
+//         ],
+//         emphasis: {
+//           itemStyle: {
+//             shadowBlur: 10,
+//             shadowOffsetX: 0,
+//             shadowColor: "rgba(0, 0, 0, 0.5)",
+//           },
+//         },
+//       },
+//     ],
+//   };
 
-  myChart.setOption(option1);
-}
+//   myChart.setOption(option1);
+// }
 
 const rules = reactive<FormRules>({
   name: [
@@ -351,7 +364,7 @@ const loginCheck = () => {
 
   if (token.value) {
     visible.value = false;
-     loginVisible.value = false;
+    loginVisible.value = false;
   } else {
     visible.value = false;
     loginVisible.value = true;
@@ -371,7 +384,7 @@ const adminClick = async (formEl: FormInstance | undefined) => {
           return ElMessage({
             showClose: true,
             message: res.msg,
-             type: "error",
+            type: "error",
           });
         }
       });
