@@ -35,6 +35,13 @@ const selectDataShow = {
 
     selectWeekOrder() { return axios.get('open/selectWeekOrder') },
 
+    SelectToDayCount() { return axios.get('open/SelectToDayCount') },
+
+    yesSelectToDaySum() { return axios.get('open/yesSelectToDaySum') },
+    
+    SelectToDaySum() { return axios.get('open/SelectToDaySum') },
+
+
 }
 
 

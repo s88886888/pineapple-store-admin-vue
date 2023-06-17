@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:24
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-15 20:56:15
- * @FilePath: \pineapple-admin-vue\src\components\aside.vue
+ * @LastEditTime: 2023-05-19 19:00:52
+ * @FilePath: \pineapple-store-admin-vue\src\components\aside.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -111,15 +111,15 @@
         </router-link>
       </el-menu-item-group>
 
-      <el-menu-item-group>
+      <!-- <el-menu-item-group>
         <template #title></template>
         <router-link to="/indexImg"
           ><el-menu-item index="3-2" disabled>
             <el-icon><Picture /></el-icon>设置退货理由</el-menu-item
           >
         </router-link>
-      </el-menu-item-group>
-
+      </el-menu-item-group> -->
+<!-- 
       <el-menu-item-group>
         <template #title></template>
         <router-link to="/indexImg"
@@ -127,7 +127,8 @@
             <el-icon><Picture /></el-icon>设置首页广告</el-menu-item
           >
         </router-link>
-      </el-menu-item-group>
+      </el-menu-item-group> -->
+      
     </el-sub-menu>
 
     <el-menu-item index="4">

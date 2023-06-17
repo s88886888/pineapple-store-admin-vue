@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 04:53:04
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-19 02:50:51
+ * @LastEditTime: 2023-05-20 15:44:20
  * @FilePath: \pineapple-store-admin-vue\src\Views\home.vue
  * @Description: 菠萝电商后台管理系统
  * 
@@ -29,18 +29,18 @@
       <el-row :gutter="20">
         <el-col :span="5"> </el-col>
         <el-col :span="4">
-          <el-card shadow="always"> 今日订单总数:200 </el-card>
+          <el-card shadow="always"> 今日订单数:{{ count }} </el-card>
         </el-col>
         <el-col :span="4">
-          <el-card shadow="hover"> 今日销售总额:54784 </el-card>
+          <el-card shadow="hover"> 今日销售额:{{ NumFilter(num) }} </el-card>
         </el-col>
         <el-col :span="4">
-          <el-card shadow="never"> 昨日销售总额:48961 </el-card>
+          <el-card shadow="never"> 昨日销售额:{{ NumFilter(yesNum) }} </el-card>
         </el-col>
         <el-col :span="5"> </el-col>
       </el-row>
 
-      <div style="padding-top: 20px">
+      <!-- <div style="padding-top: 20px">
         <el-row :gutter="20">
           <el-col :span="5"> </el-col>
           <el-col :span="4">
@@ -58,10 +58,10 @@
           </el-col>
           <el-col :span="5"> </el-col>
         </el-row>
-      </div>
+      </div> -->
     </div>
 
-    <div style="width: 1000px; margin: 0 auto">
+    <!-- <div style="width: 1000px; margin: 0 auto">
       <el-card class="box-card">
         <template #header>
           <div class="card-header">
@@ -75,7 +75,7 @@
           后台管理系统包含商品管理、商品图片管理，库存管理，订单管理、用户管理、促销管理、内容管理、轮播图设置等模块。
         </div>
       </el-card>
-    </div>
+    </div> -->
 
     <div class="main">
       <div>
@@ -84,7 +84,7 @@
       </div>
 
       <div>
-        <h1>本周浏览</h1>
+        <h1>上周浏览</h1>
         <div id="user" style="width: 500px; height: 450px"></div>
       </div>
     </div>
@@ -109,7 +109,9 @@
         </el-button>
       </div>
     </template>
-    <div class="linson">
+
+    <span>欢迎进入菠萝电商后台管理系统</span>
+    <!-- <div class="linson">
       <h1>项目介绍</h1>
       <div class="linson-xm">
         <span>
@@ -150,7 +152,7 @@
           >后台管理系统Gitee地址</a
         >
       </div>
-    </div>
+    </div> -->
   </el-dialog>
 
   <el-dialog
@@ -216,6 +218,11 @@ const token = ref<String | null>("");
 
 const ruleFormRef = ref<FormInstance>();
 
+const count = ref("");
+
+const num = ref("");
+const yesNum = ref("");
+
 const ruleForm = reactive({
   name: "admin",
   passWrod: "123456",
@@ -230,6 +237,18 @@ onMounted(() => {
       data.push(res.data[i].num);
     }
     laskWeekOrder(data);
+  });
+
+  selectDataShow.SelectToDayCount().then((res) => {
+    count.value = res.data;
+  });
+
+  selectDataShow.yesSelectToDaySum().then((res) => {
+    num.value = res.data;
+  });
+
+  selectDataShow.SelectToDaySum().then((res) => {
+    yesNum.value = res.data;
   });
 
   init1();
@@ -292,12 +311,21 @@ function init1() {
         name: "用户访问",
         type: "bar",
         barWidth: "60%",
-        data: [42, 52, 184, 334, 178, 318, 226],
+        data: [10, 13, 15, 14, 18, 12, 15],
       },
     ],
   };
 
   myChart.setOption(option2);
+}
+
+function NumFilter(value: string) {
+  // 截取当前数据到小数点后两位
+  if (value == null) {
+    return "";
+  }
+  let realVal = parseFloat(value).toFixed(2);
+  return realVal;
 }
 
 // function init2() {

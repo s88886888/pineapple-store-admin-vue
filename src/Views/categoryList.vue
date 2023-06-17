@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-16 19:35:12
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-20 20:11:49
- * @FilePath: \pineapple-admin-vue\src\Views\categoryList.vue
+ * @LastEditTime: 2023-05-19 17:06:03
+ * @FilePath: \pineapple-store-admin-vue\src\Views\categoryList.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -147,7 +147,7 @@
           </div>
         </template>
       </el-table-column>
-
+<!-- 
       <el-table-column prop="url" label="分类图片" width="200">
         <template #default="scope">
           <div style="">
@@ -167,7 +167,7 @@
             </el-tooltip>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">

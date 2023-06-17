@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2023-01-09 06:44:13
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-15 20:31:54
- * @FilePath: \pineapple-admin-vue\src\components\header.vue
+ * @LastEditTime: 2023-05-20 22:03:23
+ * @FilePath: \pineapple-store-admin-vue\src\components\header.vue
  * @Description: 菠萝电商后台管理系统
  * 
  * Copyright (c) 2023 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -41,7 +41,7 @@
          <el-menu-item index="2-1">退出</el-menu-item>
 
       </el-sub-menu> -->
-      <div style="margin-top:15px"><el-button >退出</el-button></div>
+      <!-- <div style="margin-top:15px"><el-button >退出</el-button></div> -->
     </el-menu>
 </template>
 
